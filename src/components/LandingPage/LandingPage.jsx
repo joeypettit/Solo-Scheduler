@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import Calendar from '../Calendar/Calendar';
 import './LandingPage.css';
 
 // CUSTOM COMPONENTS
@@ -62,6 +63,7 @@ function LandingPage() {
           </center>
         </div>
       </div>
+      <Calendar />
     </div>
   );
 }

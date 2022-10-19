@@ -1,0 +1,28 @@
+.cal-holder{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:817px;
+  }
+
+  .cell-thismonth{
+    background-color: #61dafb;
+    width: 114px;
+    margin: 1px;
+  }
+  
+  .cell-othermonth{
+    background-color: lightslategray;
+    width: 114px;
+    margin: 1px;
+  }
+  
+  .cell-thismonth.currentday{
+    background-color: blue;
+    width: 114px;
+    margin: 1px;
+  }
+  
+  .dayname{
+    width: 115px;
+  }
