@@ -9,19 +9,15 @@ function Calendar(){
 
     console.log('in Calendar, todays date is:', todaysDate.toFormat('yyyy'));
 
-    
-    const [monthYearDisplayed, setMonthYearDisplayed] = useState(todaysDate);
-
-
-
-
+    // this is the date that is used as a point of reference to display calendar views
+    // its default value is the current date's DateTime object.
+    const [displayReferenceDate, setDisplayReferenceDate] = useState(todaysDate);
 
 
     return(
         <div className="cal-holder">
-            <CalNavigation />
-            <CalNavigation />
-            <CalMonthView todaysDate={todaysDate} monthYearDisplayed={monthYearDisplayed}/>
+            <CalNavigation displayReferenceDate={displayReferenceDate} setDisplayReferenceDate={setDisplayReferenceDate}/>
+            <CalMonthView todaysDate={todaysDate} displayReferenceDate={displayReferenceDate}/>
         </div>
     )
 
