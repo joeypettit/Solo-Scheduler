@@ -4,7 +4,7 @@ import './CalMonthView.css';
 
 
 
-function CalMonthView({monthViewed, yearViewed}){
+function CalMonthView({monthYearDisplayed}){
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
 
@@ -12,11 +12,11 @@ function CalMonthView({monthViewed, yearViewed}){
 
 
 
-    
+
     // This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
         // get first day of the month
-        const firstOfMonth = DateTime.local(yearViewed, monthViewed, 1);
+        const firstOfMonth = DateTime.local(monthYearDisplayed.year, monthYearDisplayed.month, 1);
         console.log('in createDisplayedDates', firstOfMonth.toISODate());
         console.log('days in this month', firstOfMonth.daysInMonth);
 
@@ -55,11 +55,10 @@ function CalMonthView({monthViewed, yearViewed}){
 
     
     // refresh calendar on year or month viewed changes
-    useEffect(()=> createDisplayedDates(),[monthViewed, yearViewed]);
+    useEffect(()=> createDisplayedDates(),[monthYearDisplayed]);
 
     return (
         <div className="cal-holder">
-          
           <div className='dayname'>Monday</div>
           <div className='dayname'>Tuesday</div>
           <div className='dayname'>Wednesday</div>
@@ -71,7 +70,7 @@ function CalMonthView({monthViewed, yearViewed}){
             return(
               <div 
                 key={index} 
-                className={`cell-${date.date.month === monthViewed 
+                className={`cell-${date.date.month === monthYearDisplayed.month 
                             ?`thismonth`:`othermonth`}${
                               DateTime.now().toISODate() === date.date.toISODate() 
                               ? " currentday" : ""}`}
@@ -83,10 +82,6 @@ function CalMonthView({monthViewed, yearViewed}){
             )
           })}
         </div>
-    )
-
-
-
-    
+    ) 
 }
 export default CalMonthView;

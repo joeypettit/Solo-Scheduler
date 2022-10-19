@@ -9,10 +9,8 @@ function Calendar(){
 
     console.log('in Calendar, todays date is:', todaysDate.toFormat('yyyy'));
 
-    // These pieces of state track which month and year we are currently viewing
-    // default states are set to the month/year of today's date (local time);
-    const [monthViewed, setMonthViewed] = useState(Number(todaysDate.toFormat('L')));
-    const [yearViewed, setYearViewed] = useState(Number(todaysDate.toFormat('yyyy')));
+    
+    const [monthYearDisplayed, setMonthYearDisplayed] = useState(todaysDate);
 
 
 
@@ -21,9 +19,9 @@ function Calendar(){
 
     return(
         <div className="cal-holder">
-            <CalNavigation monthViewed={monthViewed} yearViewed={yearViewed} setMonthViewed={setMonthViewed} setYearViewed={setYearViewed}/>
             <CalNavigation />
-            <CalMonthView todaysDate={todaysDate} monthViewed={monthViewed} yearViewed={yearViewed}/>
+            <CalNavigation />
+            <CalMonthView todaysDate={todaysDate} monthYearDisplayed={monthYearDisplayed}/>
         </div>
     )
 
