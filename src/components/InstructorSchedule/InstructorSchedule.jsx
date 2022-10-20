@@ -1,5 +1,15 @@
+import Calendar from '../Calendar/Calendar';
+
 function InstructorSchedule(){
 
 
-    return
+    return(
+        <>
+            <Calendar />
+        </>
+    )
+        
+    
 }
+
+export default InstructorSchedule;

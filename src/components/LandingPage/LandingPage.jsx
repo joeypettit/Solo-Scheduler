@@ -63,7 +63,6 @@ function LandingPage() {
           </center>
         </div>
       </div>
-      <Calendar />
     </div>
   );
 }

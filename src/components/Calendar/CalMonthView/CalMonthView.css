@@ -6,19 +6,19 @@
   }
 
   .cell-thismonth{
-    background-color: #61dafb;
+    background-color:  aliceblue;
     width: 114px;
     margin: 1px;
   }
   
   .cell-othermonth{
-    background-color: lightslategray;
+    background-color: rgb(204, 204, 204);
     width: 114px;
     margin: 1px;
   }
   
   .cell-thismonth.currentday{
-    background-color: blue;
+    background-color: rgb(203, 255, 203);
     width: 114px;
     margin: 1px;
   }
@@ -28,5 +28,5 @@
   }
 
   .event-holder{
-    background-color: aliceblue;
+    background-color: rgb(185, 216, 243);
   }
