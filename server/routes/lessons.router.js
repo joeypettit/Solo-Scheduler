@@ -7,7 +7,10 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
  * GET route template
  */
 router.get('/', rejectUnauthenticated, (req, res) => {
-  // GET route code here
+  
+
+    let queryText = `SELECT * FROM "lessons" WHERE
+                    "instructor_id" = 1;`
 });
 
 /**
