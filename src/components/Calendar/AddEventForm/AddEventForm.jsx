@@ -1,14 +1,16 @@
 import {useState} from 'react';
 import {DateTime} from 'luxon';
+import {useDispatch, useSelector} from 'react-redux';
 
 function AddEventForm({setDisplayAddForm, dateToAddTo}){
-    // track input values
+    const dispatch = useDispatch();
+
+    // ~~~ track input values with state
     const [dateIn, setDateIn] = useState(dateToAddTo);
     const [startTimeIn, setStartTimeIn] = useState('12:00');
     const [lessonLengthIn, setLessonLengthIn] = useState(50);
-    console.log('inAddEventForm', );
 
-
+    //~~~ this function grabs values from inputs, formats the data, and sends to redux to POST
     function addNewLesson(){
         // console.log('in addNewLesson, dateIn:', dateIn, 'time:', startTimeIn, 'length:', lessonLengthIn);
 
@@ -20,16 +22,22 @@ function AddEventForm({setDisplayAddForm, dateToAddTo}){
         // console.log('STARTTIME is', lessonStartTime.toISO());
         // console.log(starttime.toISO());
 
+        //~~~ calculate end time from start time using user input
         const endtimeObj = starttimeObj.plus({minutes: lessonLengthIn});
-        console.log('start time object,', starttimeObj.toISO()); 
-        console.log('end time object', endtimeObj.toISO());
-
-
+        
+        //~~~ lesson object to send to POST
         const newLessonObj = {
-            starttime: starttimeObj.toISO(),
-            endtime: endtimeObj.toISO()
+            start_time: starttimeObj.toISO(),
+            end_time: endtimeObj.toISO()
         }
 
+        //~~~ dispatch lesson object to saga
+        dispatch({
+            type: 'ADD_LESSON',
+            payload: newLessonObj
+        })
+
+        //~~~ modify state to close Add Event modal
         setDisplayAddForm(false);
     }
 
