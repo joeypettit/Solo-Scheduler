@@ -7,6 +7,13 @@ import './CalMonthView.css';
 function CalMonthView({displayReferenceDate}){
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
+    // date objects ==>      {
+                            // instructor-id: 
+                            // starttime: 
+                            // endtime: 
+                            // is_open: 
+                            // is_complete: 
+                    //       }    
 
     console.log('Test DateTime)', DateTime.now().toISODate());
 
@@ -101,9 +108,9 @@ function CalMonthView({displayReferenceDate}){
                 </div>
                 <div className="cal-event-holder">
                     {date.events.length > 0 
-                        ? date.events.map((thisEvent)=>{
+                        ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.starttime).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.endtime).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            return <div className='event-div'>{eventText}</div>})
+                            return <div key={index} className='event-holder'>{eventText}</div>})
                         : ''}
                 </div>
               </div>

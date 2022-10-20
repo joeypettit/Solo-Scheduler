@@ -14,7 +14,7 @@ function RegisterForm() {
       type: 'REGISTER',
       payload: {
         username: username,
-        password: password,
+        password: password
       },
     });
   }; // end registerUser
