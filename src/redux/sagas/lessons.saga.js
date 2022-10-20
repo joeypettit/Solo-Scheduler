@@ -1,6 +1,30 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
+
+// worker Saga: will be fired on "FETCH_LESSONS"
+function* fetchLessons(){
+    try{
+        let response = yield axios({
+            method: 'GET',
+            url: '/api/lessons/'
+        })
+        console.log('in fetchLessons', response);
+
+        yield put ({ type: 'SET_LESSONS', payload: response.data});
+        
+    }
+    catch(error){
+        console.log('User Get Request Failed', error);
+
+
+
+    }
+}
+
+
+
+
 // worker Saga: will be fired on "ADD_LESSON"
 function* addLesson(action) {
   try {
@@ -13,7 +37,7 @@ function* addLesson(action) {
 
     //~~~ dispatch to get events saga to fetch updated events
     
-    
+
   } catch (error) {
     console.log('There was an error with add lesson POST', error);
   }
