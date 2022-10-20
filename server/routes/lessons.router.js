@@ -7,13 +7,20 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
  * GET route template
  */
 router.get('/', rejectUnauthenticated, (req, res) => {
-  
+    let instructor_id = req.user.id;
 
     let queryText = `SELECT * FROM "lessons" WHERE
-                    "instructor_id" = 1;`
-});
+                    "instructor_id" = $1;`
+    pool
+    .query(queryText,[instructor_id])
+    .then((response)=> res.send(response.rows))
+    .catch((error) => {
+        console.log('Error Selecting lessons', error);
+        res.sendStatus(500);
+    });
+})
 
-/**
+/*
  * POST route template
  */
 router.post('/add-lesson', rejectUnauthenticated, (req, res) => {
