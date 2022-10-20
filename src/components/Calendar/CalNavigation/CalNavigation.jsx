@@ -4,6 +4,7 @@ import './CalNavigation.css';
 
 
 function CalNavigation({displayReferenceDate, setDisplayReferenceDate}){
+    
 
     console.log('inCalNavigation displayReferenceDate is', displayReferenceDate.toISODate());
     // this helper array is used to assign the month name in displayMonthString

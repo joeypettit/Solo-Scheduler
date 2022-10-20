@@ -1,10 +1,14 @@
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
 import './CalMonthView.css';
+import AddEventForm from '../AddEventForm/AddEventForm';
+
 
 
 
 function CalMonthView({displayReferenceDate}){
+    const [displayAddForm, setDisplayAddForm] = useState(false);
+
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
     // date objects ==>      {
@@ -105,6 +109,7 @@ function CalMonthView({displayReferenceDate}){
                 >
                 <div className="cal-date">
                   {date.date.day}
+                  <button className="add-event" onClick={()=> setDisplayAddForm(true)}>+</button>
                 </div>
                 <div className="cal-event-holder">
                     {date.events.length > 0 
@@ -116,6 +121,7 @@ function CalMonthView({displayReferenceDate}){
               </div>
             )
           })}
+          {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm}/> : null}
         </div>
     ) 
 }
