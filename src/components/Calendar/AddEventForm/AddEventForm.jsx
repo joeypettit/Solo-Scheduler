@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 function AddEventForm({setDisplayAddForm, dateToAddTo}){
     const dispatch = useDispatch();
 
+
+
     // ~~~ track input values with state
     const [dateIn, setDateIn] = useState(dateToAddTo);
     const [startTimeIn, setStartTimeIn] = useState('12:00');
@@ -17,18 +19,19 @@ function AddEventForm({setDisplayAddForm, dateToAddTo}){
         //~~~ Build starttime (in iso 8601 format) from pieces of user input data
         const lessonDate = DateTime.fromISO(dateIn);
         const lessonStartTime = DateTime.fromISO(startTimeIn);
-        const starttimeObj = lessonDate.set({hours: lessonStartTime.hour, minutes: lessonStartTime.minute});
+        const starttimeObj = lessonDate.set({hours: lessonStartTime.hour, minutes: lessonStartTime.minute}).toUTC();
         // console.log('STARTDATE is', lessonDate.toISO());
         // console.log('STARTTIME is', lessonStartTime.toISO());
-        // console.log(starttime.toISO());
+        console.log('starttime obj is', starttimeObj.toISO());
 
         //~~~ calculate end time from start time using user input
-        const endtimeObj = starttimeObj.plus({minutes: lessonLengthIn});
+        const endtimeObj = starttimeObj.plus({minutes: lessonLengthIn}).toUTC();
+        console.log('endtimeObj', endtimeObj.toSQL());
         
         //~~~ lesson object to send to POST
         const newLessonObj = {
-            start_time: starttimeObj.toISO(),
-            end_time: endtimeObj.toISO()
+            start_time: starttimeObj.toSQL(),
+            end_time: endtimeObj.toSQL()
         }
 
         //~~~ dispatch lesson object to saga

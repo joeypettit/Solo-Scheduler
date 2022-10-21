@@ -9,16 +9,11 @@ function* fetchLessons(){
             method: 'GET',
             url: '/api/lessons/'
         })
-        console.log('in fetchLessons', response);
-
+        console.log('in fetchLessons', response.data);
         yield put ({ type: 'SET_LESSONS', payload: response.data});
-        
     }
     catch(error){
         console.log('User Get Request Failed', error);
-
-
-
     }
 }
 
@@ -36,6 +31,8 @@ function* addLesson(action) {
     });
 
     //~~~ dispatch to get events saga to fetch updated events
+
+    yield put({type: 'FETCH_LESSONS'})
     
 
   } catch (error) {
@@ -54,6 +51,7 @@ function* deleteLesson(action) {
 
 function* lessonSaga() {
   yield takeLatest('ADD_LESSON', addLesson);
+  yield takeLatest('FETCH_LESSONS', fetchLessons);
   yield takeLatest('LOGOUT', deleteLesson);
 }
 

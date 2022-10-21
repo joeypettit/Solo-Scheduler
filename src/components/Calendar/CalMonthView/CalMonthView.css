@@ -6,7 +6,7 @@
   }
 
   .cell-thismonth{
-    background-color:  aliceblue;
+    background-color:  rgb(212, 235, 255);
     width: 114px;
     margin: 1px;
   }
@@ -18,15 +18,29 @@
   }
   
   .cell-thismonth.currentday{
-    background-color: rgb(203, 255, 203);
+    background-color: rgb(147, 204, 255);
     width: 114px;
     margin: 1px;
   }
   
   .dayname{
     width: 115px;
+    text-align: center;
   }
 
   .event-holder{
     background-color: rgb(185, 216, 243);
+    margin: 2px;
+  }
+
+  .add-event{
+    width:8px;
+    background-color: rgba(140, 197, 140, 0.544);
+    text-align: center;
+  }
+
+  .delete-event{
+    width: 8px;
+    background-color: rgba(227, 162, 162, 0.618);
+    text-align: center;
   }

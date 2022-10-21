@@ -8,6 +8,4 @@ const lessonsReducer = (state = [], action) => {
     }
   };
   
-
   export default lessonsReducer;
-  
