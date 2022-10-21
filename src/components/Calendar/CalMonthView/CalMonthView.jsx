@@ -90,9 +90,9 @@ function CalMonthView({displayReferenceDate}){
 
         //~~~ dispatch event id to lessons saga
         dispatch({
-            type: 'DELETE_EVENT',
+            type: 'DELETE_LESSON',
             payload: eventId
-        })
+        });
 
     }
 
