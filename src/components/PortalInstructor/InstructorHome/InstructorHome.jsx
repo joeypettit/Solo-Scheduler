@@ -8,6 +8,7 @@ function HomeInstructor() {
   const user = useSelector((store) => store.user);
   return (
     <div className="container">
+      <h1>Instructor Home</h1>
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
       <LogOutButton className="btn" />
