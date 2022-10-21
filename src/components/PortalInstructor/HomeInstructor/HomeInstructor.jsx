@@ -1,9 +1,9 @@
 import React from 'react';
-import LogOutButton from '../LogOutButton/LogOutButton';
+import LogOutButton from '../../LogOutButton/LogOutButton';
 import {useSelector} from 'react-redux';
 import InstructorSchedule from '../InstructorSchedule/InstructorSchedule';
 
-function UserPage() {
+function HomeInstructor() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
   return (
@@ -17,4 +17,4 @@ function UserPage() {
 }
 
 // this allows us to use <App /> in index.js
-export default UserPage;
+export default HomeInstructor;

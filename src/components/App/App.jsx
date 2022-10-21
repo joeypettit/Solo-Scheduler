@@ -12,11 +12,9 @@ import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-
-import AboutPage from '../AboutPage/AboutPage';
-import UserPage from '../UserPage/UserPage';
-import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
+import AboutPage from '../AboutPage/AboutPage';
+import HomeInstructor from '../PortalInstructor/HomeInstructor/HomeInstructor';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 
@@ -57,7 +55,7 @@ function App() {
             exact
             path="/user"
           >
-            <UserPage />
+            <HomeInstructor />
           </ProtectedRoute>
 
           <ProtectedRoute
@@ -65,7 +63,7 @@ function App() {
             exact
             path="/info"
           >
-            <InfoPage />
+            <HomeInstructor />
           </ProtectedRoute>
 
           <Route
