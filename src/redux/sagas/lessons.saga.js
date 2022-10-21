@@ -31,6 +31,8 @@ function* addLesson(action) {
     });
 
     //~~~ dispatch to get events saga to fetch updated events
+
+    yield put({type: 'FETCH_LESSONS'})
     
 
   } catch (error) {

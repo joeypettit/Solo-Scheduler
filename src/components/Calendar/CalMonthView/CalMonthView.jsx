@@ -12,6 +12,7 @@ function CalMonthView({displayReferenceDate}){
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
+    console.log('displayedDates is', displayedDates);
     // date objects ==>      {
                             // instructor_id: 
                             // start_time: 
@@ -31,17 +32,6 @@ function CalMonthView({displayReferenceDate}){
             type: 'FETCH_LESSONS'
         })
     }
-
-    const sampleEvents = [{
-                starttime: DateTime.now().toISO(),
-                endtime: DateTime.now().plus({minutes: 50}).toISO(),
-                is_open: true,
-                is_complete: false
-            }]
-
-    console.log('sample events:', sampleEvents);
-    console.log('testing iso to isoDate', DateTime.fromISO(sampleEvents[0].starttime).toISODate());
-
 
     // This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -95,7 +85,18 @@ function CalMonthView({displayReferenceDate}){
         return todaysEventArr;
     }
 
-    
+    function deleteEvent(eventId){
+        console.log('in delete event', eventId);
+
+        //~~~ dispatch event id to lessons saga
+        dispatch({
+            type: 'DELETE_EVENT',
+            payload: eventId
+        })
+
+    }
+
+
     // refresh calendar on year or month viewed changes
     useEffect(()=> createDisplayedDates(),[displayReferenceDate, userEvents]);
     useEffect(()=> fetchUserLessons(),[]);
@@ -126,7 +127,7 @@ function CalMonthView({displayReferenceDate}){
                     {date.events.length > 0 
                         ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            return <div key={index} className='event-holder'>{eventText}</div>})
+                            return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.id)}>-</button></div>})
                         : ''}
                 </div>
               </div>
