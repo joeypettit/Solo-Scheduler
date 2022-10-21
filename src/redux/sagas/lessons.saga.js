@@ -31,8 +31,7 @@ function* addLesson(action) {
     });
 
     //~~~ dispatch to get events saga to fetch updated events
-
-    yield put({type: 'FETCH_LESSONS'})
+    yield put({type: 'FETCH_LESSONS'});
     
 
   } catch (error) {
@@ -43,16 +42,24 @@ function* addLesson(action) {
 // worker Saga: will be fired on "DELETE_LESSON" actions
 function* deleteLesson(action) {
   try {
-    
+    yield axios({
+        method: 'DELETE',
+        url: `/api/lessons/delete-lesson/${action.payload}`, // action.payload is the lesson id
+    });
+
+    //~~~ dispatch to get events saga to fetch updated events
+    yield put({type: 'FETCH_LESSONS'});
+
   } catch (error) {
-    
+    console.log('There was an error with add lesson POST', error);
   }
 }
 
 function* lessonSaga() {
-  yield takeLatest('ADD_LESSON', addLesson);
-  yield takeLatest('FETCH_LESSONS', fetchLessons);
-  yield takeLatest('LOGOUT', deleteLesson);
+    yield takeLatest('FETCH_LESSONS', fetchLessons);
+    yield takeLatest('ADD_LESSON', addLesson);
+    yield takeLatest('DELETE_LESSON', deleteLesson);
+    yield takeLatest('LOGOUT', deleteLesson);
 }
 
 export default lessonSaga;

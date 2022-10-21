@@ -38,8 +38,21 @@ router.post('/add-lesson', rejectUnauthenticated, (req, res) => {
             console.log('Errow with posting new lesson', error)
             res.sendStatus(500);
         });
+});
 
-
+router.delete('/delete-lesson/:lessonid', rejectUnauthenticated, (req, res) => {
+    let lessonId = req.params.lessonid;
+    let instructor_id = req.user.id;
+    
+    let queryText = `DELETE FROM "lessons" WHERE
+                    "instructor_id" = $1 AND "id" = $2;`
+    pool
+        .query(queryText, [instructor_id, lessonId])
+        .then((response) => res.sendStatus(204))
+        .catch((error)=> {
+            console.log('Errow with posting new lesson', error)
+            res.sendStatus(500);
+        });
 });
 
 module.exports = router;
