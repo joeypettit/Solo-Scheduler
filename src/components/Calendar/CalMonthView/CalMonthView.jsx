@@ -2,25 +2,35 @@ import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
 import './CalMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
-
-
-
+import {useSelector, useDispatch} from 'react-redux';
 
 function CalMonthView({displayReferenceDate}){
+    const dispatch = useDispatch();
+
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToAddTo, setDateToModify] = useState();
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
     // date objects ==>      {
-                            // instructor-id: 
-                            // starttime: 
-                            // endtime: 
+                            // instructor_id: 
+                            // start_time: 
+                            // end_time: 
                             // is_open: 
                             // is_complete: 
                     //       }    
 
     console.log('Test DateTime)', DateTime.now().toISODate());
+
+    const userEvents = useSelector(store => store.lessons);
+    console.log('userEvents is', userEvents);
+
+
+    function fetchUserLessons(){
+        dispatch({
+            type: 'FETCH_LESSONS'
+        })
+    }
 
     const sampleEvents = [{
                 starttime: DateTime.now().toISO(),
@@ -31,8 +41,6 @@ function CalMonthView({displayReferenceDate}){
 
     console.log('sample events:', sampleEvents);
     console.log('testing iso to isoDate', DateTime.fromISO(sampleEvents[0].starttime).toISODate());
-
-
 
 
     // This function creates an array of date objects for all of the days in current view
@@ -63,8 +71,8 @@ function CalMonthView({displayReferenceDate}){
               break;
             }
             // push date to datesInViewArray
-            datesInView.push({date, events: findEventsForDate(sampleEvents, date)});
-            console.log('datesInView at end of loop', datesInView);
+            datesInView.push({date, events: findEventsForDate(userEvents, date)});
+            // console.log('datesInView at end of loop', datesInView);
         }
         // set datesInView array to state
         setDisplayedDates(datesInView);
@@ -74,21 +82,23 @@ function CalMonthView({displayReferenceDate}){
     // this function filters through person's events (array of event objects) and attaches those 
     // that have a start time on the inputted date (date arguement is a Luxon DateTime object);
     function findEventsForDate(events, date){
-
+        console.log('in findEventsForDate, event is:', events);
         // filter persons events array and match those with start time on this date.
         let todaysEventArr = events.filter((thisEvent)=>{
             // console.log('in findEventsForDate filter', date.toISODate());
-            if(DateTime.fromISO(thisEvent.starttime).toISODate()===date.toISODate()){
+            if(DateTime.fromISO(thisEvent.start_time).toISODate()===date.toISODate()){
                 return true;
             }
             });
+            console.log('in findEventsForDate, array is:', todaysEventArr);
         // return array of objects with all events associated with inputed date.
         return todaysEventArr;
     }
 
     
     // refresh calendar on year or month viewed changes
-    useEffect(()=> createDisplayedDates(),[displayReferenceDate]);
+    useEffect(()=> createDisplayedDates(),[displayReferenceDate, userEvents]);
+    useEffect(()=> fetchUserLessons(),[]);
 
     return (
         <div className="cal-holder">
@@ -115,7 +125,7 @@ function CalMonthView({displayReferenceDate}){
                 <div className="cal-event-holder">
                     {date.events.length > 0 
                         ? date.events.map((thisEvent, index)=>{
-                            let eventText = `${DateTime.fromISO(thisEvent.starttime).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.endtime).toLocaleString(DateTime.TIME_SIMPLE)}`
+                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
                             return <div key={index} className='event-holder'>{eventText}</div>})
                         : ''}
                 </div>
