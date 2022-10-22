@@ -8,7 +8,7 @@ function LessonSelect() {
   return (
     <div className="container">
         <h1>Choose your lesson</h1>
-        <LogOutButton className="btn" />
+        
     </div>
   );
 }

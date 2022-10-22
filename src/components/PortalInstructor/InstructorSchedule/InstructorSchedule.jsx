@@ -1,4 +1,4 @@
-import Calendar from '../../Calendar/Calendar';
+import Calendar from '../InstructorCalendar/InstructorCalendar';
 
 function InstructorSchedule(){
 

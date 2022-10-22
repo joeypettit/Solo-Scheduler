@@ -17,8 +17,8 @@ import StudentHome from '../PortalStudent/StudentHome/StudentHome';
 import InstructorRoute from '../ProtectedRoutes/InstructorRoute';
 import StudentRoute from '../ProtectedRoutes/StudentRoute';
 import InstructorSchedule from '../PortalInstructor/InstructorSchedule/InstructorSchedule';
-import InstructorSelect from '../PortalStudent/Register/InstructorSelect';
-import LessonSelect from '../PortalStudent/Register/LessonSelect';
+import StudentInstructorSelect from '../PortalStudent/Register/StudentInstructorSelect';
+import StudentLessonSelect from '../PortalStudent/Register/StudentLessonSelect';
 
 function App() {
   const dispatch = useDispatch();
@@ -61,10 +61,10 @@ function App() {
             <StudentHome />
           </StudentRoute>
           <StudentRoute exact path="/student-instructor-select">
-            <InstructorSelect />
+            <StudentInstructorSelect />
           </StudentRoute>
           <StudentRoute exact path="/student-lesson-select">
-            <LessonSelect />
+            <StudentLessonSelect />
           </StudentRoute>
 
 

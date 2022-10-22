@@ -5,11 +5,13 @@ import {useHistory} from 'react-router-dom';
 import {useEffect} from 'react';
 
 function InstructorSelect() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const instructors = useSelector(store => store.instructors)
   console.log('In Instructor Select, instructors are', instructors);
 
   function handleSelection(instructorId){
+    console.log('in handleSelection', instructorId);
     dispatch({
       type: 'SET_SELECTED_INSTRUCTOR',
       payload: instructorId
@@ -33,9 +35,9 @@ function InstructorSelect() {
     <div className="container">
         <h1>Choose Your Instructor</h1>
         {instructors !==[] ? instructors.map((instructor, index)=>{
-          return <div key={index}>{instructor.first_name} {instructor.last_name}</div>
+          return (<div key={index} className="instructor-cards" onClick={()=>handleSelection(instructor.id)}>
+                  {instructor.first_name} {instructor.last_name}</div>)
         }) : null}
-        <LogOutButton className="btn" />
     </div>
   );
 }

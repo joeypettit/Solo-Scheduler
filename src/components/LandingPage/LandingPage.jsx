@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Calendar from '../Calendar/Calendar';
+import Calendar from '../PortalInstructor/InstructorCalendar/InstructorCalendar';
 import './LandingPage.css';
 
 // CUSTOM COMPONENTS

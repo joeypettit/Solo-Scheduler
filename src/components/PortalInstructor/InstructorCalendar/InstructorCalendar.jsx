@@ -1,6 +1,6 @@
 import CalMonthView from "./CalMonthView/CalMonthView";
 import CalNavigation from "./CalNavigation/CalNavigation";
-import './Calendar.css';
+import './InstructorCalendar.css';
 import {DateTime} from 'luxon';
 import {useState, useEffect} from 'react';
 
