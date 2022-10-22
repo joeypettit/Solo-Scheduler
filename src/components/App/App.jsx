@@ -8,32 +8,98 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
-import ProtectedRoute from '../ProtectedRoutes/InstructorRoutes';
 import LandingPage from '../LandingPage/LandingPage';
-import AboutPage from '../AboutPage/AboutPage';
-import HomeInstructor from '../PortalInstructor/InstructorHome/InstructorHome';
+import InstructorHome from '../PortalInstructor/InstructorHome/InstructorHome';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import './App.css';
 import StudentHome from '../PortalStudent/StudentHome/StudentHome';
+import InstructorRoute from '../ProtectedRoutes/InstructorRoute';
+import StudentRoute from '../ProtectedRoutes/StudentRoute';
+import InstructorSchedule from '../PortalInstructor/InstructorSchedule/InstructorSchedule';
+import InstructorSelect from '../PortalStudent/Register/InstructorSelect';
+import LessonSelect from '../PortalStudent/Register/LessonSelect';
 
 function App() {
   const dispatch = useDispatch();
 
   const user = useSelector(store => store.user);
 
+  console.log('User is:', user.id);
+  console.log('user id is', user.id === 11)
+
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
-  }, [dispatch]);
+  }, []);
 
   return (
     <div>
-      <Nav />
-      <AboutPage />
-      <HomeInstructor />
-      <RegisterPage />
-      <LandingPage />
-      <StudentHome />
+      <Router>
+        <Nav />
+        <Switch>
+
+          {/* ~~~~~ Non-User Routes ~~~~~ */}
+          <Redirect exact from="/" to="/home"/>
+          
+          <Route exact path="/home">
+            {/* conditinal reder depending on role */}
+            {user.id && user.is_instructor ? <Redirect to="/instructor-home" /> : null}
+            {user.id && !user.is_instructor ? <Redirect to="/student-home" /> : null}
+            {!user.id ? <LandingPage /> : null}
+          </Route>
+          
+          <Route path ="/register">
+            <RegisterPage />
+          </Route>
+
+          <Route exact path="/login">
+            {user.id ? <Redirect to="/home" /> : <LoginPage /> }
+          </Route>
+          
+          {/* ~~~~~ Student Routes ~~~~~ */}
+          <StudentRoute exact path="/student-home">
+            <StudentHome />
+          </StudentRoute>
+          <StudentRoute exact path="/student-instructor-select">
+            <InstructorSelect />
+          </StudentRoute>
+          <StudentRoute exact path="/student-lesson-select">
+            <LessonSelect />
+          </StudentRoute>
+
+
+          {/* ~~~~~ Instructor Routes ~~~~~ */}
+          <InstructorRoute exact path="/instructor-home">
+            <InstructorHome />
+          </InstructorRoute>
+          <InstructorRoute exact path="/instructor-schedule">
+            <InstructorSchedule />
+          </InstructorRoute>
+          <InstructorRoute exact path="/instructor-history">
+            <InstructorSchedule />
+          </InstructorRoute>
+
+          
+          
+
+
+
+          
+          
+          <Route>
+            <h1>404</h1>
+          </Route>
+
+
+        </Switch>
+        
+
+
+      </Router>
+
+      
+      
+      
       
     </div>
   );

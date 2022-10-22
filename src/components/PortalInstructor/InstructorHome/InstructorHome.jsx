@@ -2,20 +2,22 @@ import React from 'react';
 import LogOutButton from '../../LogOutButton/LogOutButton';
 import {useSelector} from 'react-redux';
 import InstructorSchedule from '../InstructorSchedule/InstructorSchedule';
+import {useHistory} from 'react-router-dom';
 
-function HomeInstructor() {
-  // this component doesn't do much to start, just renders some user reducer info to the DOM
+function InstructorHome() {
+
+  const history = useHistory();
   const user = useSelector((store) => store.user);
   return (
     <div className="container">
       <h1>Instructor Home</h1>
       <h2>Welcome, {user.username}!</h2>
       <p>Your ID is: {user.id}</p>
+      <button className="btn" onClick={()=> history.push("/instructor-schedule")}>View Your Schedule</button>
       <LogOutButton className="btn" />
-      <InstructorSchedule />
     </div>
   );
 }
 
 // this allows us to use <App /> in index.js
-export default HomeInstructor;
+export default InstructorHome;

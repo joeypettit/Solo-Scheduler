@@ -7,9 +7,7 @@ function InstructorSchedule(){
         <>
             <Calendar />
         </>
-    )
-        
-    
+    ) 
 }
 
 export default InstructorSchedule;
