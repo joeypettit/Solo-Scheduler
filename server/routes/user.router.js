@@ -47,4 +47,23 @@ router.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+
+// ~~~ NON-AUTHENTICATION END POINTS
+
+//~~~ Fetches all Instructors
+router.get('/all-instructors', rejectUnauthenticated, (req, res) => {
+  console.log()
+  let queryText = `SELECT "id", "first_name", "last_name" FROM "user" WHERE "is_instructor"=true;`;
+  pool
+  .query(queryText)
+  .then((response)=>{
+    console.log('in all-instructors', response.rows);
+    res.send(response.rows)
+  }).catch((error) => console.log('Error SELECTing instructors'));
+})
+
+
+
+
+
 module.exports = router;

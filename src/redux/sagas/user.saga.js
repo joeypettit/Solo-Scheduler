@@ -24,8 +24,23 @@ function* fetchUser() {
   }
 }
 
+function* fetchInstructors(){
+  try{
+    const response = yield axios({
+        method: 'GET',
+        url: '/api/user/all-instructors/'
+      })
+
+      yield put({type: 'SET_INSTRUCTORS', payload: response.data})
+
+  } catch(error) {
+    console.log('Failed to GET instructors', error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
+  yield takeLatest('FETCH_INSTRUCTORS', fetchInstructors);
 }
 
 export default userSaga;
