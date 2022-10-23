@@ -83,7 +83,7 @@ function* deleteLesson(action) {
     yield put({type: 'FETCH_LESSONS'});
 
   } catch (error) {
-    console.log('There was an error with add lesson POST', error);
+    console.log('There was an error with delete lesson DELETE', error);
   }
 }
 

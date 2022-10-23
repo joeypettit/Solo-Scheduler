@@ -83,15 +83,20 @@ router.delete('/delete-lesson/:lessonid', rejectUnauthenticated, (req, res) => {
     let lessonId = req.params.lessonid;
     let instructor_id = req.user.id;
     
-    let queryText = `DELETE FROM "lessons" WHERE
-                    "instructor_id" = $1 AND "id" = $2;`
+    let queryText = `DELETE FROM "students_lessons" WHERE "lesson_id"=$1;` 
     pool
-        .query(queryText, [instructor_id, lessonId])
+    .query(queryText, [lessonId])
+    .then((response) => {
+        let queryText2 = `DELETE FROM "lessons" WHERE
+                            "instructor_id" = $1 AND "id" = $2;`
+        pool
+        .query(queryText2, [instructor_id, lessonId])
         .then((response) => res.sendStatus(204))
-        .catch((error)=> {
-            console.log('Errow with posting new lesson', error)
-            res.sendStatus(500);
-        });
+    })  
+    .catch((error)=> {
+        console.log('Errow with deleting lesson', error)
+        res.sendStatus(500);
+    });
 });
 
 module.exports = router;
