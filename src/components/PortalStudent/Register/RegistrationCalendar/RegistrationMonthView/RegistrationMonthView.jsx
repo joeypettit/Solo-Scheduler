@@ -1,14 +1,16 @@
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
 import './RegistrationMonthView.css';
-import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
+import ConfirmLessonTime from '../RegistrationModals/ConfirmLessonTime';
 
 function RegistrationMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
+    const [lessonToSchedule, setLessonToSchedule] = useState();
+    const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
@@ -78,15 +80,14 @@ function RegistrationMonthView({displayReferenceDate}){
         return todaysEventArr;
     }
 
-    function deleteEvent(eventId){
-        console.log('in delete event', eventId);
-
-        //~~~ dispatch event id to lessons saga
-        dispatch({
-            type: 'DELETE_LESSON',
-            payload: eventId
-        });
+    function launchConfirmLessonTime(selectedLesson){
+      console.log('in launchConfirmLessonTime', selectedLesson);
+      setLessonToSchedule(selectedLesson);
+      setConfirmModalDisplayed(true);
     }
+
+    
+
 
 
     // refresh calendar on year or month viewed changes
@@ -112,19 +113,20 @@ function RegistrationMonthView({displayReferenceDate}){
                 >
                 <div className="cal-date">
                   {date.date.day}
-                  <button className="add-event" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
                 </div>
                 <div className="cal-event-holder">
                     {date.events.length > 0 
                         ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.id)}>-</button></div>})
+                            return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTime(thisEvent)}>Select</button></div>})
                         : ''}
                 </div>
               </div>
             )
           })}
-          {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
+          {confirmModalDisplayed ? <ConfirmLessonTime lessonToSchedule={lessonToSchedule}/> : null }
+
+
         </div>
     ) 
 }

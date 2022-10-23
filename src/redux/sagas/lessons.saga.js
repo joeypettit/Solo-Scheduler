@@ -35,8 +35,6 @@ function* fetchSelectedInstructorLessons(action) {
 }
 
 
-
-
 // worker Saga: will be fired on "ADD_LESSON"
 function* addLesson(action) {
   try {
@@ -55,6 +53,23 @@ function* addLesson(action) {
     console.log('There was an error with add lesson POST', error);
   }
 }
+
+function* reserveLessonTime(action){
+  try {
+    yield axios({
+        method: 'PUT',
+        url: `/api/lessons/reserve-lesson/${action.payload.lesson_id}`, // action.payload is the lesson id
+    });
+
+    //~~~ dispatch to get events saga to fetch updated events
+    yield put ({ type: 'FETCH_SELECTED_INSTRUCTOR_LESSONS', payload: action.payload.instructor_id})
+
+  } catch (error) {
+    console.log('There was an error with add lesson POST', error);
+  }
+}
+
+
 
 // worker Saga: will be fired on "DELETE_LESSON" actions
 function* deleteLesson(action) {
@@ -75,6 +90,7 @@ function* deleteLesson(action) {
 function* lessonSaga() {
     yield takeLatest('FETCH_LESSONS', fetchInstructorLessons);
     yield takeLatest('FETCH_SELECTED_INSTRUCTOR_LESSONS', fetchSelectedInstructorLessons);
+    yield takeLatest('RESERVE_LESSON_TIME', reserveLessonTime);
     yield takeLatest('ADD_LESSON', addLesson);
     yield takeLatest('DELETE_LESSON', deleteLesson);
     yield takeLatest('LOGOUT', deleteLesson);

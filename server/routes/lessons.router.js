@@ -39,6 +39,16 @@ router.get('/instructor/:instructorid', rejectUnauthenticated, (req, res) => {
     });
 })
 
+// this route will reserve the lesson of included ID for the logged in user
+router.put('/reserve-lesson/:lessonid', rejectUnauthenticated, (req, res) => {
+    let lessonId = req.params.lessonid;
+    
+    let queryText = ``;
+
+
+
+})
+
 
 
 /*
@@ -51,14 +61,22 @@ router.post('/add-lesson', rejectUnauthenticated, (req, res) => {
     console.log('IN ADD LESSON ROUTE, id=', req.user.id, 'start=', start_time, 'end=', end_time);
     
     let queryText = `INSERT INTO "lessons" 	("start_time", "end_time", "instructor_id")
-                    VALUES					($1, $2, $3);`
+                    VALUES					($1, $2, $3) RETURNING "lessons"."id";`
     pool
-        .query(queryText, [start_time, end_time, instructor_id])
-        .then((response) => res.sendStatus(201))
-        .catch((error)=> {
-            console.log('Errow with posting new lesson', error)
-            res.sendStatus(500);
-        });
+    .query(queryText, [start_time, end_time, instructor_id])
+    .then((response) => {
+        console.log('in the response,', response.rows[0].id);
+        let queryText2 = `INSERT INTO "students_lessons" ("lesson_id") VALUES ($1);`;
+
+        pool
+        .query(queryText2, [response.rows[0].id])
+        .then((response2) => res.sendStatus(201))
+        .catch(error => console.log('Error with inserting into join table', error));
+        })
+    .catch((error)=> {
+        console.log('Errow with posting new lesson', error)
+        res.sendStatus(500);
+    });
 });
 
 router.delete('/delete-lesson/:lessonid', rejectUnauthenticated, (req, res) => {
