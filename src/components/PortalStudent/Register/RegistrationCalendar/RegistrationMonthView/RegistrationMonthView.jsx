@@ -120,9 +120,15 @@ function RegistrationMonthView({displayReferenceDate}){
                         ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
                             
-                            if(thisEvent.registered_students_ids.length > 0 && thisEvent.registered_students_ids.includes(user.id)){
+                            // if a student is registerd for a class it will appear different color and with cancel button, 
+                            // if the class is taken by someone else, it won't appear at all.
+                            // if the class is before current date, it wont appear at all
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return null;
+                            } else if(thisEvent.registered_students_ids.includes(user.id)){
                               return <div key={index} className='event-holder registered'>{eventText}<button className='cancel-event'>Cancel</button></div>
-                            } else if (thisEvent.registered_students_ids.length > 0 && !thisEvent.registered_students_ids.includes(user.id)){
+                            } else if (!thisEvent.registered_students_ids.includes(null) && !thisEvent.registered_students_ids.includes(user.id)){
                               return null;
                             } else{
                               return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTime(thisEvent)}>Select</button></div>
