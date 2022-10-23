@@ -57,7 +57,7 @@ function* addLesson(action) {
 function* reserveLessonTime(action){
   try {
     yield axios({
-        method: 'PUT',
+        method: 'POST',
         url: `/api/lessons/reserve-lesson/${action.payload.lesson_id}`, // action.payload is the lesson id
     });
 

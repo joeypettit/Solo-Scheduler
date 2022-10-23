@@ -1,7 +1,7 @@
 import {DateTime} from 'luxon';
 import {useDispatch} from 'react-redux';
 
-function ConfirmLessonTime({lessonToSchedule}){
+function ConfirmLessonTime({lessonToSchedule, setConfirmModalDisplayed, setSuccessModalDisplayed}){
     const dispatch = useDispatch();
 
     console.log('in ConfirmLessonTime', lessonToSchedule);
@@ -16,6 +16,10 @@ function ConfirmLessonTime({lessonToSchedule}){
             type: 'RESERVE_LESSON_TIME',
             payload: lessonToSchedule
         })
+        // close this modal
+        setConfirmModalDisplayed(false);
+        // open registration successful modal
+        setSuccessModalDisplayed(true);
     }
 
     return (

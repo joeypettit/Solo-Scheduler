@@ -11,14 +11,12 @@ function RegistrationCalendar(){
     // its default value is the current date's DateTime object.
     const [displayReferenceDate, setDisplayReferenceDate] = useState(todaysDate);
 
-
     return(
         <div className="cal-holder">
             <CalNavigation displayReferenceDate={displayReferenceDate} setDisplayReferenceDate={setDisplayReferenceDate}/>
             <CalMonthView todaysDate={todaysDate} displayReferenceDate={displayReferenceDate} />
         </div>
     )
-
 }
 
 export default RegistrationCalendar;
