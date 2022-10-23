@@ -8,7 +8,7 @@ function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
-    const [dateToAddTo, setDateToModify] = useState();
+    const [dateToModify, setDateToModify] = useState();
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
@@ -25,7 +25,6 @@ function CalMonthView({displayReferenceDate}){
 
     const userEvents = useSelector(store => store.lessons);
     console.log('userEvents is', userEvents);
-
 
     function fetchUserLessons(){
         dispatch({
@@ -133,7 +132,7 @@ function CalMonthView({displayReferenceDate}){
               </div>
             )
           })}
-          {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToAddTo={dateToAddTo}/> : null}
+          {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
         </div>
     ) 
 }

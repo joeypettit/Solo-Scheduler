@@ -2,13 +2,13 @@ import {useState} from 'react';
 import {DateTime} from 'luxon';
 import {useDispatch, useSelector} from 'react-redux';
 
-function AddEventForm({setDisplayAddForm, dateToAddTo}){
+function AddEventForm({setDisplayAddForm, dateToModify}){
     const dispatch = useDispatch();
 
 
 
     // ~~~ track input values with state
-    const [dateIn, setDateIn] = useState(dateToAddTo);
+    const [dateIn, setDateIn] = useState(dateToModify);
     const [startTimeIn, setStartTimeIn] = useState('12:00');
     const [lessonLengthIn, setLessonLengthIn] = useState(50);
 
@@ -47,7 +47,7 @@ function AddEventForm({setDisplayAddForm, dateToAddTo}){
     return(
         <div className="add-lesson-form">
             <label htmlFor="time-in" />
-            <input type="date" value={dateIn ? dateIn : dateToAddTo} onChange={(e)=>setDateIn(e.target.value)}/>
+            <input type="date" value={dateIn ? dateIn : dateToModify} onChange={(e)=>setDateIn(e.target.value)}/>
             <label htmlFor="time-in">Time:</label>
             <input type="time" value={startTimeIn} onChange={(e)=>setStartTimeIn(e.target.value)}/>
             <label htmlFor="length-in">Lesson Length</label>

@@ -1,10 +1,10 @@
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
-import './CalMonthView.css';
+import './RegistrationMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
 
-function CalMonthView({displayReferenceDate}){
+function RegistrationMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
@@ -12,7 +12,6 @@ function CalMonthView({displayReferenceDate}){
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
-    console.log('displayedDates is', displayedDates);
     // date objects ==>      {
                             // instructor_id: 
                             // start_time: 
@@ -21,17 +20,10 @@ function CalMonthView({displayReferenceDate}){
                             // is_complete: 
                     //       }    
 
-    console.log('Test DateTime)', DateTime.now().toISODate());
+    // instructorLessons contains an object 
+    const instructorLessons = useSelector(store => store.selectedInstructor);
+    console.log('instructorLessons is', instructorLessons);
 
-    const userEvents = useSelector(store => store.lessons);
-    console.log('userEvents is', userEvents);
-
-
-    function fetchUserLessons(){
-        dispatch({
-            type: 'FETCH_LESSONS'
-        })
-    }
 
     // This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -61,7 +53,7 @@ function CalMonthView({displayReferenceDate}){
               break;
             }
             // push date to datesInViewArray
-            datesInView.push({date, events: findEventsForDate(userEvents, date)});
+            datesInView.push({date, events: findEventsForDate(instructorLessons, date)});
             // console.log('datesInView at end of loop', datesInView);
         }
         // set datesInView array to state
@@ -82,6 +74,7 @@ function CalMonthView({displayReferenceDate}){
             });
             console.log('in findEventsForDate, array is:', todaysEventArr);
         // return array of objects with all events associated with inputed date.
+        console.log(todaysEventArr);
         return todaysEventArr;
     }
 
@@ -93,13 +86,11 @@ function CalMonthView({displayReferenceDate}){
             type: 'DELETE_LESSON',
             payload: eventId
         });
-
     }
 
 
     // refresh calendar on year or month viewed changes
-    useEffect(()=> createDisplayedDates(),[displayReferenceDate, userEvents]);
-    useEffect(()=> fetchUserLessons(),[]);
+    useEffect(()=> createDisplayedDates(),[displayReferenceDate, instructorLessons]);
 
     return (
         <div className="cal-holder">
@@ -137,4 +128,4 @@ function CalMonthView({displayReferenceDate}){
         </div>
     ) 
 }
-export default CalMonthView;
+export default RegistrationMonthView;

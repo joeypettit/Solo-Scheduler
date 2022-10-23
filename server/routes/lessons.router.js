@@ -3,10 +3,8 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-/**
- * GET route template
- */
-router.get('/', rejectUnauthenticated, (req, res) => {
+// this route selects the schedule of the currently logged in instructor
+router.get('/instructor', rejectUnauthenticated, (req, res) => {
     let instructor_id = req.user.id;
 
     let queryText = `SELECT * FROM "lessons" WHERE
@@ -19,6 +17,29 @@ router.get('/', rejectUnauthenticated, (req, res) => {
         res.sendStatus(500);
     });
 })
+
+// this route selects the available lessons of an instructor (by a different user (student))
+// returns an object with instructor info and array of lesson objects (from lessons table)
+router.get('/instructor/:instructorid', rejectUnauthenticated, (req, res) => {
+    let instructor_id = req.params.instructorid;
+
+    let queryText = `SELECT "last_name", "first_name", "instructor_id", "lessons"."id" AS "lesson_id", 
+                        "start_time", "end_time" FROM "lessons"
+                        JOIN "user" ON "user"."id" = "lessons"."instructor_id"
+                        WHERE "instructor_id" = $1 AND "is_available"=true;`
+    pool
+    .query(queryText,[instructor_id])
+    .then((response)=> {
+        console.log('in Select available lessons route', response.rows);
+        res.send(response.rows)
+    })
+    .catch((error) => {
+        console.log('Error Selecting lessons', error);
+        res.sendStatus(500);
+    });
+})
+
+
 
 /*
  * POST route template

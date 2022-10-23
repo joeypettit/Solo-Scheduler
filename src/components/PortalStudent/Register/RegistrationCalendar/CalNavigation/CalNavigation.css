@@ -1,0 +1,4 @@
+.cal-nav-bar{
+    display: flex;
+    flex-direction: row;
+  }

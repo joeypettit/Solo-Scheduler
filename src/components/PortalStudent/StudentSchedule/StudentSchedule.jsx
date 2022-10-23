@@ -1,11 +1,11 @@
-import Calendar from '../../PortalInstructor/InstructorCalendar/InstructorCalendar';
+import StudentCalendar from '../../PortalInstructor/InstructorCalendar/InstructorCalendar';
 
 function StudentSchedule(){
 
 
     return(
         <>
-            <Calendar />
+            <StudentCalendar />
         </>
     )
         

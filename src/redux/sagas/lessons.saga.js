@@ -3,18 +3,35 @@ import axios from 'axios';
 
 
 // worker Saga: will be fired on "FETCH_LESSONS"
-function* fetchLessons(){
+// fetches lessons (calendar events) of current user
+function* fetchInstructorLessons(){
     try{
         let response = yield axios({
             method: 'GET',
-            url: '/api/lessons/'
+            url: '/api/lessons/instructor'
         })
-        console.log('in fetchLessons', response.data);
+        console.log('in fetchInstructorLessons', response.data);
         yield put ({ type: 'SET_LESSONS', payload: response.data});
     }
     catch(error){
         console.log('User Get Request Failed', error);
     }
+}
+
+// this saga fetches the lesson schedule and firstname, lastname, and id of the 
+// selected instructor (user id is in action.payload)
+function* fetchSelectedInstructorLessons(action) {
+  try{
+    let response = yield axios({
+        method: 'GET',
+        url: `/api/lessons/instructor/${action.payload}` //action.payload => selected instructor id
+    });
+    console.log('in fetchSelectedInstructorLessons', response.data);
+    yield put ({ type: 'SET_SELECTED_INSTRUCTOR', payload: response.data});
+  }
+  catch(error){
+      console.log('fetchSelectedInstructorLessons Get Request Failed', error);
+  }
 }
 
 
@@ -56,7 +73,8 @@ function* deleteLesson(action) {
 }
 
 function* lessonSaga() {
-    yield takeLatest('FETCH_LESSONS', fetchLessons);
+    yield takeLatest('FETCH_LESSONS', fetchInstructorLessons);
+    yield takeLatest('FETCH_SELECTED_INSTRUCTOR_LESSONS', fetchSelectedInstructorLessons);
     yield takeLatest('ADD_LESSON', addLesson);
     yield takeLatest('DELETE_LESSON', deleteLesson);
     yield takeLatest('LOGOUT', deleteLesson);

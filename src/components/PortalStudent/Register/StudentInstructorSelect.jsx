@@ -13,7 +13,7 @@ function InstructorSelect() {
   function handleSelection(instructorId){
     console.log('in handleSelection', instructorId);
     dispatch({
-      type: 'SET_SELECTED_INSTRUCTOR',
+      type: 'FETCH_SELECTED_INSTRUCTOR_LESSONS',
       payload: instructorId
     })
     history.push('/student-lesson-select')

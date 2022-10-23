@@ -38,6 +38,7 @@ function* fetchInstructors(){
   }
 }
 
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
   yield takeLatest('FETCH_INSTRUCTORS', fetchInstructors);
