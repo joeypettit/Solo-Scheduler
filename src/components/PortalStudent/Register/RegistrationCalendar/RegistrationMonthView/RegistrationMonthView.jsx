@@ -11,6 +11,7 @@ function RegistrationMonthView({displayReferenceDate}){
     const [dateToModify, setDateToModify] = useState();
     const [lessonToSchedule, setLessonToSchedule] = useState();
     const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
+    const user = useSelector(store=>store.user);
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
@@ -118,8 +119,15 @@ function RegistrationMonthView({displayReferenceDate}){
                     {date.events.length > 0 
                         ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTime(thisEvent)}>Select</button></div>})
-                        : ''}
+                            
+                            if(thisEvent.registered_students_ids.length > 0 && thisEvent.registered_students_ids.includes(user.id)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='cancel-event'>Cancel</button></div>
+                            } else if (thisEvent.registered_students_ids.length > 0 && !thisEvent.registered_students_ids.includes(user.id)){
+                              return null;
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTime(thisEvent)}>Select</button></div>
+                            }
+                        }) : ''}
                 </div>
               </div>
             )
