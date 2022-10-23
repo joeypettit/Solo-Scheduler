@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import './RegistrationMonthView.css';
 import {useSelector, useDispatch} from 'react-redux';
 import ConfirmLessonTime from '../RegistrationModals/ConfirmLessonTime';
+import RegistrationSuccessful from '../RegistrationModals/RegistrationSuccessful';
 
 function RegistrationMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
@@ -11,6 +12,7 @@ function RegistrationMonthView({displayReferenceDate}){
     const [dateToModify, setDateToModify] = useState();
     const [lessonToSchedule, setLessonToSchedule] = useState();
     const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
+    const [successModalDisplayed, setSuccessModalDisplayed] = useState(false);
     const user = useSelector(store=>store.user);
 
     // holds date objects for all dates in this view
@@ -138,9 +140,12 @@ function RegistrationMonthView({displayReferenceDate}){
               </div>
             )
           })}
-          {confirmModalDisplayed ? <ConfirmLessonTime lessonToSchedule={lessonToSchedule}/> : null }
-
-
+          {confirmModalDisplayed ? <ConfirmLessonTime lessonToSchedule={lessonToSchedule} 
+                                    setConfirmModalDisplayed={setConfirmModalDisplayed}  
+                                    setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
+                                  : null}
+          {successModalDisplayed ? <RegistrationSuccessful setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
+                                  : null}
         </div>
     ) 
 }
