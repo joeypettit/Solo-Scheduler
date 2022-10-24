@@ -7,8 +7,11 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 router.get('/instructor', rejectUnauthenticated, (req, res) => {
     let instructor_id = req.user.id;
 
-    let queryText = `SELECT * FROM "lessons" WHERE
-                    "instructor_id" = $1;`
+    let queryText = `SELECT "start_time", "end_time", "notes", "instructor_id", "lessons"."id" AS "lesson_id", array_agg("student_id") AS "students_enrolled_ids" FROM "lessons"
+                        LEFT JOIN "students_lessons" ON "lessons"."id" = "students_lessons"."lesson_id"
+                        WHERE "instructor_id" = $1
+                        GROUP BY  "instructor_id", "start_time", "end_time", "notes", "lessons"."id";`
+                    
     pool
     .query(queryText,[instructor_id])
     .then((response)=> res.send(response.rows))
@@ -56,6 +59,19 @@ router.post('/reserve-lesson/:lessonid', rejectUnauthenticated, (req, res) => {
     .then((response)=> res.sendStatus(201))
     .catch((error)=>console.log('Error with reserving lesson', error));
 });
+
+// removes logged in student's reservation of a specific lesson
+router.delete('/remove-reservation/:lessonid', rejectUnauthenticated, (req, res)=>{
+    let lessonId = req.params.lessonid;
+    let studentId = req.user.id;
+
+    let queryText = `DELETE FROM "students_lessons" WHERE "student_id" = $1 AND "lesson_id"=$2;`;
+
+    pool
+    .query(queryText, [studentId, lessonId])
+    .then((response)=> res.sendStatus(204))
+    .catch((error) => console.log('Error with Deleting Lesson Reservation', error)); 
+})
 
 
 

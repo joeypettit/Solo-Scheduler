@@ -3,12 +3,19 @@ import {useEffect, useState} from 'react';
 import './CalMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
+import ShowLessonInfoModal from '../ShowLessonInfoModal';
 
 function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
+
+    // these are for launching the information modal for a selected lesson
+    // when lessonInfoModalDisplayed is true, the modal will render with the
+    // information of the lesson in thisLessonInfo
+    const [thisLessonInfo, setThisLessonInfo] = useState();
+    const [lessonInfoModalDisplayed, setLessonModalInfoDisplayed] = useState();
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
@@ -92,7 +99,11 @@ function CalMonthView({displayReferenceDate}){
             type: 'DELETE_LESSON',
             payload: eventId
         });
+    }
 
+    function launchDisplayLessonInfo(thisLesson){
+      setThisLessonInfo(thisLesson);
+      setLessonModalInfoDisplayed(true);
     }
 
 
@@ -126,13 +137,25 @@ function CalMonthView({displayReferenceDate}){
                     {date.events.length > 0 
                         ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.id)}>-</button></div>})
-                        : ''}
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
                 </div>
               </div>
             )
           })}
           {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
+          {lessonInfoModalDisplayed ? <ShowLessonInfoModal thisLessonInfo={thisLessonInfo} setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
+
         </div>
     ) 
 }

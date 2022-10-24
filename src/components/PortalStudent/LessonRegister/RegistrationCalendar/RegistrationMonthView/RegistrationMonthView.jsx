@@ -4,15 +4,18 @@ import './RegistrationMonthView.css';
 import {useSelector, useDispatch} from 'react-redux';
 import ConfirmLessonTime from '../RegistrationModals/ConfirmLessonTime';
 import RegistrationSuccessful from '../RegistrationModals/RegistrationSuccessful';
+import ConfirmCancellation from '../RegistrationModals/ConfirmCancellation';
 
 function RegistrationMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
-    const [displayAddForm, setDisplayAddForm] = useState(false);
-    const [dateToModify, setDateToModify] = useState();
     const [lessonToSchedule, setLessonToSchedule] = useState();
     const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
     const [successModalDisplayed, setSuccessModalDisplayed] = useState(false);
+
+    const [cancelModalDisplayed, setCancelModalDisplayed] = useState(false);
+    const [lessonToCancel, setLessonToCancel] = useState();
+
     const user = useSelector(store=>store.user);
 
     // holds date objects for all dates in this view
@@ -83,15 +86,17 @@ function RegistrationMonthView({displayReferenceDate}){
         return todaysEventArr;
     }
 
-    function launchConfirmLessonTime(selectedLesson){
-      console.log('in launchConfirmLessonTime', selectedLesson);
+    function launchConfirmLessonTimeModal(selectedLesson){
+      console.log('in launchConfirmLessonTimeModal', selectedLesson);
       setLessonToSchedule(selectedLesson);
       setConfirmModalDisplayed(true);
     }
 
+    function launchCancellationModal(selectedLesson){
+      setLessonToCancel(selectedLesson);
+      setCancelModalDisplayed(true);
+    }
     
-
-
 
     // refresh calendar on year or month viewed changes
     useEffect(()=> createDisplayedDates(),[displayReferenceDate, instructorLessons]);
@@ -129,11 +134,11 @@ function RegistrationMonthView({displayReferenceDate}){
                             if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
                               return null;
                             } else if(thisEvent.registered_students_ids.includes(user.id)){
-                              return <div key={index} className='event-holder registered'>{eventText}<button className='cancel-event'>Cancel</button></div>
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='cancel-event' onClick={()=>launchCancellationModal(thisEvent)}>Cancel</button></div>
                             } else if (!thisEvent.registered_students_ids.includes(null) && !thisEvent.registered_students_ids.includes(user.id)){
                               return null;
                             } else{
-                              return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTime(thisEvent)}>Select</button></div>
+                              return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTimeModal(thisEvent)}>Select</button></div>
                             }
                         }) : ''}
                 </div>
@@ -145,6 +150,8 @@ function RegistrationMonthView({displayReferenceDate}){
                                     setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
                                   : null}
           {successModalDisplayed ? <RegistrationSuccessful setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
+                                  : null}
+          {cancelModalDisplayed ? <ConfirmCancellation setCancelModalDisplayed={setCancelModalDisplayed} lessonToCancel={lessonToCancel}/> 
                                   : null}
         </div>
     ) 
