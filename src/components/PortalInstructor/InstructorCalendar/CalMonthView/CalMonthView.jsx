@@ -126,8 +126,18 @@ function CalMonthView({displayReferenceDate}){
                     {date.events.length > 0 
                         ? date.events.map((thisEvent, index)=>{
                             let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.id)}>-</button></div>})
-                        : ''}
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='event-holder past'>{eventText}<button>Info</button></div>
+                            } else if(thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button>Info</button></div>
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
                 </div>
               </div>
             )

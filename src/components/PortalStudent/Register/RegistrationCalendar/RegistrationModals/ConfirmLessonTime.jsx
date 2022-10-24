@@ -29,7 +29,7 @@ function ConfirmLessonTime({lessonToSchedule, setConfirmModalDisplayed, setSucce
             <h2>To: {endTime.toLocaleString(DateTime.TIME_SIMPLE)}</h2>
             <h2>On: {startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h2>
             <button onClick={()=>reserveLesson()}>Confirm</button>
-            <button>Back</button> 
+            <button onClick={()=>setConfirmModalDisplayed(false)}>Back</button> 
         </div>  
     )
 }

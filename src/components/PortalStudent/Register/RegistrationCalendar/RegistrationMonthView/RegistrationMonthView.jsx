@@ -8,8 +8,6 @@ import RegistrationSuccessful from '../RegistrationModals/RegistrationSuccessful
 function RegistrationMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
-    const [displayAddForm, setDisplayAddForm] = useState(false);
-    const [dateToModify, setDateToModify] = useState();
     const [lessonToSchedule, setLessonToSchedule] = useState();
     const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
     const [successModalDisplayed, setSuccessModalDisplayed] = useState(false);

@@ -7,8 +7,11 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 router.get('/instructor', rejectUnauthenticated, (req, res) => {
     let instructor_id = req.user.id;
 
-    let queryText = `SELECT * FROM "lessons" WHERE
-                    "instructor_id" = $1;`
+    let queryText = `SELECT "start_time", "end_time", "notes", "instructor_id", "lessons"."id" AS "lesson_id", array_agg("student_id") AS "students_enrolled_ids" FROM "lessons"
+                        LEFT JOIN "students_lessons" ON "lessons"."id" = "students_lessons"."lesson_id"
+                        WHERE "instructor_id" = $1
+                        GROUP BY  "instructor_id", "start_time", "end_time", "notes", "lessons"."id";`
+                    
     pool
     .query(queryText,[instructor_id])
     .then((response)=> res.send(response.rows))
