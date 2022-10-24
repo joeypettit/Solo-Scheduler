@@ -17,8 +17,8 @@ import StudentHome from '../PortalStudent/StudentHome/StudentHome';
 import InstructorRoute from '../ProtectedRoutes/InstructorRoute';
 import StudentRoute from '../ProtectedRoutes/StudentRoute';
 import InstructorSchedule from '../PortalInstructor/InstructorSchedule/InstructorSchedule';
-import StudentInstructorSelect from '../PortalStudent/Register/StudentInstructorSelect';
-import StudentLessonSelect from '../PortalStudent/Register/StudentLessonSelect';
+import StudentInstructorSelect from '../PortalStudent/LessonRegister/StudentInstructorSelect';
+import StudentLessonSelect from '../PortalStudent/LessonRegister/StudentLessonSelect';
 
 function App() {
   const dispatch = useDispatch();
