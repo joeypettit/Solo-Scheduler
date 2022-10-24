@@ -3,12 +3,19 @@ import {useEffect, useState} from 'react';
 import './CalMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
+import ShowLessonInfo from '../ShowLessonInfo';
 
 function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
+
+    // these are for launching the information modal for a selected lesson
+    // when lessonInfoModalDisplayed is true, the modal will render with the
+    // information of the lesson in thisLessonInfo
+    const [thisLessonInfo, setThisLessonInfo] = useState();
+    const [lessonInfoModalDisplayed, setLessonModalInfoDisplayed] = useState();
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
@@ -143,6 +150,8 @@ function CalMonthView({displayReferenceDate}){
             )
           })}
           {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
+          {lessonInfoModalDisplayed ? <ShowLessonInfo setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
+
         </div>
     ) 
 }
