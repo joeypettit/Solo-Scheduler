@@ -63,6 +63,31 @@ router.get('/all-instructors', rejectUnauthenticated, (req, res) => {
 })
 
 
+// get array of all current usernames, check if sent username is taken,
+// send back boolean for isAvailable
+router.get('/checkusername/:username', (req, res) => {
+  console.log('incoming username', req.params.username);
+  let usernameToCheck = req.params.username;
+  let queryText = `SELECT "username" FROM "user"`;
+  
+  pool
+  .query(queryText)
+  .then((response)=>{
+    console.log('in checkusername, usernameToCheck is', usernameToCheck);
+    console.log('in checkusername', response.rows);
+
+    let isAvailable = true;
+    for(item of response.rows){
+      console.log('in for loop',item.username, usernameToCheck);
+      if(item.username===usernameToCheck){
+        isAvailable = false;
+        break;
+      }
+    }
+    console.log('isAvailable is', isAvailable);
+    res.send(isAvailable);
+  }).catch((error) => console.log('Error checking username'));
+});
 
 
 

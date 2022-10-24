@@ -1,19 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 function RegisterForm() {
+  const errors = useSelector((store) => store.errors);
+  const dispatch = useDispatch();
+
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [usernameIsAvailable, setUsernameIsAvailable] = useState();
+
+  const [password, setPassword] = useState(''); // track user input
+  const [confirmPassword, setConfirmPassword] = useState(''); // track user input
+  const [approvedPassword, setApprovedPassword] =useState(''); // track user input
+  const [passwordFeedback, setPasswordFeedback] = useState(''); // give feedback back to user on password choice
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  
+  
+
+
+  function checkPasswordsMatch(){
+    if(password.length < 6){
+      setPasswordFeedback('Password must be at least 6 characters');
+    }
+    else if(password === confirmPassword){
+      setPasswordFeedback('✅ Passwords Match!');      
+      setApprovedPassword(password);
+    } else if(password !== confirmPassword){
+      setPasswordFeedback('Passwords do not match');      
+      setApprovedPassword('');
+    }
+  }
+
+  // fire axios request to check current user name against all others
+  // response from axios gives back a boolean for isAvailable
+  function checkUserNameMatch(){
+    axios.get(`/api/user/checkusername/${username}`)
+      .then((response)=>{
+        console.log('in checkUserNameMatch', response.data);
+        setUsernameIsAvailable(response.data);
+
+      })
+      .catch((error)=>console.log('error with checking user name', error));
+
+  }
 
 
 
 
-  const errors = useSelector((store) => store.errors);
-  const dispatch = useDispatch();
 
   const registerUser = (event) => {
     event.preventDefault();
@@ -26,7 +62,13 @@ function RegisterForm() {
         
       },
     });
-  }; // end registerUser
+  };
+
+  useEffect(()=>checkPasswordsMatch(),[password, confirmPassword]);
+  useEffect(()=> {
+    let timer = setTimeout(()=>checkUserNameMatch(), 3000)
+    return ()=>clearTimeout(timer);
+  }, [username]);
 
   return (
     <form className="formPanel" onSubmit={registerUser}>
@@ -47,6 +89,7 @@ function RegisterForm() {
             onChange={(event) => setUsername(event.target.value)}
           />
         </label>
+        {usernameIsAvailable ? <div> ✅ Username Available!</div> : <div>❌ Username Unavailable</div>}
       </div>
       <div>
         <label htmlFor="password">
@@ -56,19 +99,24 @@ function RegisterForm() {
             name="password"
             value={password}
             required
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              setPassword(event.target.value),
+              checkPasswordsMatch()}}
           />
         </label>
+        <div>{passwordFeedback}</div>
       </div>
       <div>
-        <label htmlFor="password">
+        <label htmlFor="confirm-password">
           Confirm Password:
           <input
             type="password"
             name="confirm-password"
             value={confirmPassword}
             required
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={(event) => {
+              setConfirmPassword(event.target.value),
+              checkPasswordsMatch()}}
           />
         </label>
       </div>
