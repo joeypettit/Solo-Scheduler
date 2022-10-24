@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import './CalMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
-import ShowLessonInfo from '../ShowLessonInfo';
+import ShowLessonInfoModal from '../ShowLessonInfoModal';
 
 function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
@@ -99,7 +99,11 @@ function CalMonthView({displayReferenceDate}){
             type: 'DELETE_LESSON',
             payload: eventId
         });
+    }
 
+    function launchDisplayLessonInfo(thisLesson){
+      setThisLessonInfo(thisLesson);
+      setLessonModalInfoDisplayed(true);
     }
 
 
@@ -138,9 +142,9 @@ function CalMonthView({displayReferenceDate}){
                             // if a student is registerd for a class it will appear different color and with cancel button,
                      
                             if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
-                              return <div key={index} className='event-holder past'>{eventText}<button>Info</button></div>
-                            } else if(thisEvent.students_enrolled_ids.includes(null)){
-                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button>Info</button></div>
+                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
                             } else{
                               return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
                             }})
@@ -150,7 +154,7 @@ function CalMonthView({displayReferenceDate}){
             )
           })}
           {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
-          {lessonInfoModalDisplayed ? <ShowLessonInfo setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
+          {lessonInfoModalDisplayed ? <ShowLessonInfoModal thisLessonInfo={thisLessonInfo} setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
 
         </div>
     ) 

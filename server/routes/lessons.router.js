@@ -60,6 +60,19 @@ router.post('/reserve-lesson/:lessonid', rejectUnauthenticated, (req, res) => {
     .catch((error)=>console.log('Error with reserving lesson', error));
 });
 
+// removes logged in student's reservation of a specific lesson
+router.delete('/remove-reservation/:lessonid', rejectUnauthenticated, (req, res)=>{
+    let lessonId = req.params.lessonid;
+    let studentId = req.user.id;
+
+    let queryText = `DELETE FROM "students_lessons" WHERE "student_id" = $1 AND "lesson_id"=$2;`;
+
+    pool
+    .query(queryText, [studentId, lessonId])
+    .then((response)=> res.sendStatus(204))
+    .catch((error) => console.log('Error with Deleting Lesson Reservation', error)); 
+})
+
 
 
 // this allows instructor to add an available lesson time.

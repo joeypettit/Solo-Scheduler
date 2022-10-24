@@ -58,7 +58,7 @@ function* reserveLessonTime(action){
   try {
     yield axios({
         method: 'POST',
-        url: `/api/lessons/reserve-lesson/${action.payload.lesson_id}`, // action.payload is the lesson id
+        url: `/api/lessons/reserve-lesson/${action.payload.lesson_id}`, // action.payload is the lesson to be reserved
     });
 
     //~~~ dispatch to get events saga to fetch updated events
@@ -69,6 +69,21 @@ function* reserveLessonTime(action){
   }
 }
 
+// removes lesson reservation for the logged in student
+function* removeLessonReservation(action){
+  try{
+    yield axios({
+      method: 'DELETE',
+      url: `/api/lessons/remove-reservation/${action.payload.lesson_id}`, // action.payload is the lesson to be removed
+  });
+
+  //~~~ dispatch to get events saga to fetch updated events
+  yield put ({ type: 'FETCH_SELECTED_INSTRUCTOR_LESSONS', payload: action.payload.instructor_id})
+
+  } catch (error) {
+
+  }
+}
 
 
 // worker Saga: will be fired on "DELETE_LESSON" actions
@@ -91,6 +106,7 @@ function* lessonSaga() {
     yield takeLatest('FETCH_LESSONS', fetchInstructorLessons);
     yield takeLatest('FETCH_SELECTED_INSTRUCTOR_LESSONS', fetchSelectedInstructorLessons);
     yield takeLatest('RESERVE_LESSON_TIME', reserveLessonTime);
+    yield takeLatest('REMOVE_LESSON_RESERVATION', removeLessonReservation)
     yield takeLatest('ADD_LESSON', addLesson);
     yield takeLatest('DELETE_LESSON', deleteLesson);
     yield takeLatest('LOGOUT', deleteLesson);
