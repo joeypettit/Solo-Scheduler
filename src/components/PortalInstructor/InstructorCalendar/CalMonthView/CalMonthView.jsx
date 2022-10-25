@@ -70,9 +70,41 @@ function CalMonthView({displayReferenceDate}){
             datesInView.push({date, events: findEventsForDate(userEvents, date)});
             // console.log('datesInView at end of loop', datesInView);
         }
+
+        // seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
+        let week1 =[];
+        let week2 =[];
+        let week3 =[];
+        let week4 =[];
+        let week5 =[];
+        let week6 =[];
+
+        for(let day = 0; day<datesInView.length; day++){
+          if(day<7){
+            week1.push(datesInView[day]);
+          } else if (day<14){
+            week2.push(datesInView[day]);
+          } else if (day<21){
+            week3.push(datesInView[day]);
+          } else if (day<28){
+            week4.push(datesInView[day]);
+          } else if (day<35){
+            week5.push(datesInView[day]);
+          } else if (day<42){
+            week6.push(datesInView[day]);
+          }
+        }
+
+        let arrayOfWeekArrays = [week1,week2,week3,week4,week5,week6];
+        console.log('The weeks of the month arrays are', arrayOfWeekArrays);
         // set datesInView array to state
-        setDisplayedDates(datesInView);
+        setDisplayedDates(arrayOfWeekArrays);
     }
+
+
+
+
+
 
 
     // this function filters through person's events (array of event objects) and attaches those 
@@ -113,15 +145,18 @@ function CalMonthView({displayReferenceDate}){
 
     return (
         <div className="cal-holder">
-          <div className='dayname'>Monday</div>
-          <div className='dayname'>Tuesday</div>
-          <div className='dayname'>Wednesday</div>
-          <div className='dayname'>Thursday</div>
-          <div className='dayname'>Friday</div>
-          <div className='dayname'>Saturday</div>
-          <div className='dayname'>Sunday</div>
+          <div className='row'>
+            <div className='dayname col'>Monday</div>
+            <div className='dayname col'>Tuesday</div>
+            <div className='dayname col'>Wednesday</div>
+            <div className='dayname col'>Thursday</div>
+            <div className='dayname col'>Friday</div>
+            <div className='dayname col'>Saturday</div>
+            <div className='dayname col'>Sunday</div>
+          </div>
           {displayedDates.map((date, index)=>{
             return(
+    
               <div 
                 key={index} 
                 className={`cell-${date.date.month === displayReferenceDate.month 
