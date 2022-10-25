@@ -1,8 +1,14 @@
-.cal-holder{
+/* .cal-holder{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width:817px;
+    min-width:817px;
+  }
+
+  .cell{
+    min-height: 140px;
+    min-width: 114px;;
+    margin: 2px;
   }
 
   .cell-thismonth{
@@ -56,4 +62,4 @@
   .event-holder.registered{
     background-color: rgb(100, 185, 141);
     margin: 2px;
-  }
+  } */

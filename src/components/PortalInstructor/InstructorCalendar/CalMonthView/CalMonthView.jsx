@@ -1,6 +1,6 @@
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
-import './CalMonthView.css';
+// import './CalMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
 import ShowLessonInfoModal from '../ShowLessonInfoModal';
@@ -144,22 +144,65 @@ function CalMonthView({displayReferenceDate}){
     useEffect(()=> fetchUserLessons(),[]);
 
     return (
-        <div className="cal-holder">
+        <div className="container-lg">
           <div className='row'>
-            <div className='dayname col'>Monday</div>
-            <div className='dayname col'>Tuesday</div>
-            <div className='dayname col'>Wednesday</div>
-            <div className='dayname col'>Thursday</div>
-            <div className='dayname col'>Friday</div>
-            <div className='dayname col'>Saturday</div>
-            <div className='dayname col'>Sunday</div>
+            <div className='col'>Monday</div>
+            <div className='col'>Tuesday</div>
+            <div className='col'>Wednesday</div>
+            <div className='col'>Thursday</div>
+            <div className='col'>Friday</div>
+            <div className='col'>Saturday</div>
+            <div className='col'>Sunday</div>
           </div>
-          {displayedDates.map((date, index)=>{
+
+          {/* Week 1 */}
+          <div className='row'>
+          {displayedDates[0] && displayedDates[0].map((date, index)=>{
+            return(
+              <div 
+                key={index} 
+                className={`col ${date.date.month === displayReferenceDate.month 
+                            ?`bg-white m-1 px-0 py-1 shadow border`:`bg-gray-900 m-1 px-0 py-1 shadow border`}${
+                              DateTime.now().toISODate() === date.date.toISODate() 
+                              ? "bg-primary m-1 px-0 py-1 shadow border" : ""}`}
+                >
+                <div className="d-flex justify-content-between">
+                  <span className="px-1 mx-1 border border-dark shadow-sm bg-light">{date.date.day}</span>
+                  <span>
+                    <button className="btn btn-sm btn-primary mx-1" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                  </span>
+                </div>
+                <div className="">
+                    {date.events.length > 0 
+                        ? date.events.map((thisEvent, index)=>{
+                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='alert alert-secondary p-1 m-1'>{eventText}<button className="btn" onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='alert alert-success p-1 m-1'>{eventText}<button className="btn" onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button className="btn" onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else{
+                              return <div key={index} className='alert alert-primary p-1 m-1'>{eventText}<button className="btn" onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
+                </div>
+              </div>
+            )
+          })}
+          </div>
+          {/* --------------------------------------------------- */}
+
+          {/* Week 2 */}
+          <div className='row'>
+          {displayedDates[1] && displayedDates[1].map((date, index)=>{
             return(
     
               <div 
                 key={index} 
-                className={`cell-${date.date.month === displayReferenceDate.month 
+                className={`col cell-${date.date.month === displayReferenceDate.month 
                             ?`thismonth`:`othermonth`}${
                               DateTime.now().toISODate() === date.date.toISODate() 
                               ? " currentday" : ""}`}
@@ -188,6 +231,168 @@ function CalMonthView({displayReferenceDate}){
               </div>
             )
           })}
+          </div>
+          {/* --------------------------------------------------- */}
+
+          {/* Week 3 */}
+          <div className='row'>
+          {displayedDates[2] && displayedDates[2].map((date, index)=>{
+            return(
+    
+              <div 
+                key={index} 
+                className={`col cell-${date.date.month === displayReferenceDate.month 
+                            ?`thismonth`:`othermonth`}${
+                              DateTime.now().toISODate() === date.date.toISODate() 
+                              ? " currentday" : ""}`}
+                >
+                <div className="cal-date">
+                  {date.date.day}
+                  <button className="add-event" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                </div>
+                <div className="cal-event-holder">
+                    {date.events.length > 0 
+                        ? date.events.map((thisEvent, index)=>{
+                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
+                </div>
+              </div>
+            )
+          })}
+          </div>
+          {/* --------------------------------------------------- */}
+
+          {/* Week 4 */}
+          <div className='row'>
+          {displayedDates[3] && displayedDates[3].map((date, index)=>{
+            return(
+    
+              <div 
+                key={index} 
+                className={`col cell-${date.date.month === displayReferenceDate.month 
+                            ?`thismonth`:`othermonth`}${
+                              DateTime.now().toISODate() === date.date.toISODate() 
+                              ? " currentday" : ""}`}
+                >
+                <div className="cal-date">
+                  {date.date.day}
+                  <button className="add-event" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                </div>
+                <div className="cal-event-holder">
+                    {date.events.length > 0 
+                        ? date.events.map((thisEvent, index)=>{
+                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
+                </div>
+              </div>
+            )
+          })}
+          </div>
+          {/* --------------------------------------------------- */}
+
+          {/* Week 5 */}
+          <div className='row'>
+          {displayedDates[4] && displayedDates[4].map((date, index)=>{
+            return(
+    
+              <div 
+                key={index} 
+                className={`col cell-${date.date.month === displayReferenceDate.month 
+                            ?`thismonth`:`othermonth`}${
+                              DateTime.now().toISODate() === date.date.toISODate() 
+                              ? " currentday" : ""}`}
+                >
+                <div className="cal-date">
+                  {date.date.day}
+                  <button className="add-event" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                </div>
+                <div className="cal-event-holder">
+                    {date.events.length > 0 
+                        ? date.events.map((thisEvent, index)=>{
+                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
+                </div>
+              </div>
+            )
+          })}
+          </div>
+          {/* --------------------------------------------------- */}
+
+          {/* Week 6 */}
+          <div className='row'>
+          {displayedDates[5] && displayedDates[5].map((date, index)=>{
+            return(
+    
+              <div 
+                key={index} 
+                className={`cell col my-1 ${date.date.month === displayReferenceDate.month 
+                            ?`bg-white`:`bg-secondary`}${
+                              DateTime.now().toISODate() === date.date.toISODate() 
+                              ? " currentday" : ""}`}
+                >
+                <div className="cal-date">
+                  {date.date.day}
+                  <button className="add-event" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                </div>
+                <div className="cal-event-holder">
+                    {date.events.length > 0 
+                        ? date.events.map((thisEvent, index)=>{
+                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                            
+                            // if the class is before current date, it wont appear at all
+                            // if a student is registerd for a class it will appear different color and with cancel button,
+                     
+                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
+                            } else{
+                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
+                            }})
+                        : null }
+                </div>
+              </div>
+            )
+          })}
+          </div>
+          {/* --------------------------------------------------- */}
+
+
+
+
           {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
           {lessonInfoModalDisplayed ? <ShowLessonInfoModal thisLessonInfo={thisLessonInfo} setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
 
