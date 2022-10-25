@@ -37,59 +37,60 @@ function App() {
       <Router>
         <Nav />
         <Switch>
+          <div className='d-flex justify-content-center'>
+            {/* ~~~~~ Non-User Routes ~~~~~ */}
+            <Redirect exact from="/" to="/home"/>
+            
+            <Route exact path="/home">
+              {/* conditinal reder depending on role */}
+              {user.id && user.is_instructor ? <Redirect to="/instructor-home" /> : null}
+              {user.id && !user.is_instructor ? <Redirect to="/student-home" /> : null}
+              {!user.id ? <LandingPage /> : null}
+            </Route>
+            
+            <Route path ="/register">
+              <RegisterPage />
+            </Route>
 
-          {/* ~~~~~ Non-User Routes ~~~~~ */}
-          <Redirect exact from="/" to="/home"/>
-          
-          <Route exact path="/home">
-            {/* conditinal reder depending on role */}
-            {user.id && user.is_instructor ? <Redirect to="/instructor-home" /> : null}
-            {user.id && !user.is_instructor ? <Redirect to="/student-home" /> : null}
-            {!user.id ? <LandingPage /> : null}
-          </Route>
-          
-          <Route path ="/register">
-            <RegisterPage />
-          </Route>
-
-          <Route exact path="/login">
-            {user.id ? <Redirect to="/home" /> : <LoginPage /> }
-          </Route>
-          
-          {/* ~~~~~ Student Routes ~~~~~ */}
-          <StudentRoute exact path="/student-home">
-            <StudentHome />
-          </StudentRoute>
-          <StudentRoute exact path="/student-instructor-select">
-            <StudentInstructorSelect />
-          </StudentRoute>
-          <StudentRoute exact path="/student-lesson-select">
-            <StudentLessonSelect />
-          </StudentRoute>
-
-
-          {/* ~~~~~ Instructor Routes ~~~~~ */}
-          <InstructorRoute exact path="/instructor-home">
-            <InstructorHome />
-          </InstructorRoute>
-          <InstructorRoute exact path="/instructor-schedule">
-            <InstructorSchedule />
-          </InstructorRoute>
-          <InstructorRoute exact path="/instructor-history">
-            <InstructorSchedule />
-          </InstructorRoute>
-
-          
-          
+            <Route exact path="/login">
+              {user.id ? <Redirect to="/home" /> : <LoginPage /> }
+            </Route>
+            
+            {/* ~~~~~ Student Routes ~~~~~ */}
+            <StudentRoute exact path="/student-home">
+              <StudentHome />
+            </StudentRoute>
+            <StudentRoute exact path="/student-instructor-select">
+              <StudentInstructorSelect />
+            </StudentRoute>
+            <StudentRoute exact path="/student-lesson-select">
+              <StudentLessonSelect />
+            </StudentRoute>
 
 
+            {/* ~~~~~ Instructor Routes ~~~~~ */}
+            <InstructorRoute exact path="/instructor-home">
+              <InstructorHome />
+            </InstructorRoute>
+            <InstructorRoute exact path="/instructor-schedule">
+              <InstructorSchedule />
+            </InstructorRoute>
+            <InstructorRoute exact path="/instructor-history">
+              <InstructorSchedule />
+            </InstructorRoute>
 
-          
-          
+            
+            
+
+
+
+            
+            
+            
+          </div>
           <Route>
-            <h1>404</h1>
+              <h1>404</h1>
           </Route>
-
 
         </Switch>
         
