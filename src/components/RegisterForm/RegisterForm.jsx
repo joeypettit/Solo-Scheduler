@@ -66,7 +66,7 @@ function RegisterForm() {
 
   useEffect(()=>checkPasswordsMatch(),[password, confirmPassword]);
   useEffect(()=> {
-    let timer = setTimeout(()=>checkUserNameMatch(), 3000)
+    let timer = setTimeout(()=>checkUserNameMatch(), 1500)
     return ()=>clearTimeout(timer);
   }, [username]);
 
@@ -89,7 +89,7 @@ function RegisterForm() {
             onChange={(event) => setUsername(event.target.value)}
           />
         </label>
-        {usernameIsAvailable ? <div> ✅ Username Available!</div> : <div>❌ Username Unavailable</div>}
+        {username? usernameIsAvailable ? <div> ✅ Username Available!</div> : <div>❌ Username Unavailable</div> :null}
       </div>
       <div>
         <label htmlFor="password">
@@ -104,7 +104,7 @@ function RegisterForm() {
               checkPasswordsMatch()}}
           />
         </label>
-        <div>{passwordFeedback}</div>
+        {password? <div>{passwordFeedback}</div> : null}
       </div>
       <div>
         <label htmlFor="confirm-password">
