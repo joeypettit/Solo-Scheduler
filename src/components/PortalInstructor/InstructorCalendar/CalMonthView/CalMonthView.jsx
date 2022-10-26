@@ -258,9 +258,8 @@ function CalMonthView({displayReferenceDate}){
           {createWeekRows(displayedDates[4])}
           {createWeekRows(displayedDates[5])}
 
-          {/* conditional render of modal (if this lessonInfo) */}
+          {/* conditional render of modals (if this lessonInfo) */}
           {thisLessonInfo && <ShowLessonInfoModal displayLessonInfoModal={displayLessonInfoModal} onHide={()=> setDisplayLessonInfoModal(true)} setDisplayLessonInfoModal={setDisplayLessonInfoModal} thisLessonInfo={thisLessonInfo}/>}
-
           {thisLessonInfo && <DeleteConfirmModal displayDeleteConfirmModal={displayDeleteConfirmModal} onHide={()=> setDisplayDeleteConfirmModal(true)} setDisplayDeleteConfirmModal={setDisplayDeleteConfirmModal} thisLessonInfo={thisLessonInfo}/>}
 
 
