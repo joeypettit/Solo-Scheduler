@@ -3,8 +3,7 @@ import CalNavigation from "./CalNavigation/CalNavigation";
 import './InstructorCalendar.css';
 import {DateTime} from 'luxon';
 import {useState, useEffect} from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+
 
 function Calendar(){
     const todaysDate = DateTime.now();
@@ -21,8 +20,6 @@ function Calendar(){
             <CalNavigation displayReferenceDate={displayReferenceDate} setDisplayReferenceDate={setDisplayReferenceDate}/>
             <CalMonthView todaysDate={todaysDate} displayReferenceDate={displayReferenceDate}/>
         </div>
-        
-
     )
 
 }

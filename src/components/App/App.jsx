@@ -37,8 +37,9 @@ function App() {
     <div>
       <Router>
         <Nav />
+        <div className='d-flex justify-content-center'>
         <Switch>
-          <div className='d-flex justify-content-center'>
+          
             {/* ~~~~~ Non-User Routes ~~~~~ */}
             <Redirect exact from="/" to="/home"/>
             
@@ -79,30 +80,15 @@ function App() {
             <InstructorRoute exact path="/instructor-history">
               <InstructorSchedule />
             </InstructorRoute>
-
+ 
             
-            
-
-
-
-            
-            
-            
-          </div>
+          
           <Route>
               <h1>404</h1>
           </Route>
-
         </Switch>
-        
-
-
+        </div>
       </Router>
-
-      
-      
-      
-      
     </div>
   );
 }
