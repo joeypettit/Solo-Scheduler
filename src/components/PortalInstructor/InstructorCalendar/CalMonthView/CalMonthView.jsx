@@ -3,10 +3,16 @@ import {useEffect, useState} from 'react';
 import './CalMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
-import ShowLessonInfoModal from '../ShowLessonInfoModal';
+import ShowLessonInfoModal from '../../InstructorModals/ShowLessonInfoModal';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
+
+    // bootstrap modal
+    const [show, setShow] = useState(false);
+
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
@@ -218,7 +224,8 @@ function CalMonthView({displayReferenceDate}){
 
     function launchDisplayLessonInfo(thisLesson){
       setThisLessonInfo(thisLesson);
-      setLessonModalInfoDisplayed(true);
+      // setLessonModalInfoDisplayed(true);
+      setShow(true);
     }
 
 
@@ -245,8 +252,8 @@ function CalMonthView({displayReferenceDate}){
           {createWeekRows(displayedDates[4])}
           {createWeekRows(displayedDates[5])}
 
-
-
+          {/* conditional render of modal (if this lessonInfo) */}
+          {thisLessonInfo && <ShowLessonInfoModal show={show} onHide={()=> setShow(true)} setShow={setShow} thisLessonInfo={thisLessonInfo}/>}
 
           {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
           {lessonInfoModalDisplayed ? <ShowLessonInfoModal thisLessonInfo={thisLessonInfo} setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
