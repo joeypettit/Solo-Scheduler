@@ -6,13 +6,14 @@ import {useSelector, useDispatch} from 'react-redux';
 import ShowLessonInfoModal from '../../InstructorModals/ShowLessonInfoModal';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import DeleteConfirmModal from '../../InstructorModals/DeleteConfirmModal';
 
 function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
     // bootstrap modal
-    const [show, setShow] = useState(false);
-
+    const [displayLessonInfoModal, setDisplayLessonInfoModal] = useState(false);
+    const [displayDeleteConfirmModal, setDisplayDeleteConfirmModal] = useState(false);
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
@@ -39,13 +40,15 @@ function CalMonthView({displayReferenceDate}){
     const userEvents = useSelector(store => store.lessons);
     console.log('userEvents is', userEvents);
 
+
+    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR
     function fetchUserLessons(){
         dispatch({
             type: 'FETCH_LESSONS'
         })
     }
 
-    // This function creates an array of date objects for all of the days in current view
+    //~~~ This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
         // get first day of the month
         const firstOfMonth = DateTime.local(displayReferenceDate.year, displayReferenceDate.month, 1);
@@ -101,9 +104,9 @@ function CalMonthView({displayReferenceDate}){
           }
         }
 
+        // set all week arrays to state in an array
         let arrayOfWeekArrays = [week1,week2,week3,week4,week5,week6];
         console.log('The weeks of the month arrays are', arrayOfWeekArrays);
-        // set datesInView array to state
         setDisplayedDates(arrayOfWeekArrays);
     }
 
@@ -156,7 +159,7 @@ function CalMonthView({displayReferenceDate}){
                                             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                           </svg>
                                         </button>
-                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>deleteEvent(thisEvent.lesson_id)}>
+                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDeleteConfirmationModal(thisEvent)}>
                                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -173,7 +176,7 @@ function CalMonthView({displayReferenceDate}){
                                               <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                             </svg>
                                           </button>
-                                          <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>deleteEvent(thisEvent.lesson_id)}>
+                                          <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDeleteConfirmationModal(thisEvent)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
                                               <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                               <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
@@ -181,15 +184,15 @@ function CalMonthView({displayReferenceDate}){
                                           </button>
                                         </div>                           
                                    </div>
-                          }})
-                      : null }
+                              }
+                          })
+                    : null }
               </div>
             </div>
           )
         })}
         </div>
       )
-
     }
 
 
@@ -213,8 +216,6 @@ function CalMonthView({displayReferenceDate}){
     }
 
     function deleteEvent(eventId){
-        console.log('in delete event', eventId);
-
         //~~~ dispatch event id to lessons saga
         dispatch({
             type: 'DELETE_LESSON',
@@ -222,10 +223,15 @@ function CalMonthView({displayReferenceDate}){
         });
     }
 
+    function launchDeleteConfirmationModal(thisLesson){
+      setThisLessonInfo(thisLesson);
+      setDisplayDeleteConfirmModal(true);
+    }
+
     function launchDisplayLessonInfo(thisLesson){
       setThisLessonInfo(thisLesson);
       // setLessonModalInfoDisplayed(true);
-      setShow(true);
+      setDisplayLessonInfoModal(true);
     }
 
 
@@ -253,10 +259,12 @@ function CalMonthView({displayReferenceDate}){
           {createWeekRows(displayedDates[5])}
 
           {/* conditional render of modal (if this lessonInfo) */}
-          {thisLessonInfo && <ShowLessonInfoModal show={show} onHide={()=> setShow(true)} setShow={setShow} thisLessonInfo={thisLessonInfo}/>}
+          {thisLessonInfo && <ShowLessonInfoModal displayLessonInfoModal={displayLessonInfoModal} onHide={()=> setDisplayLessonInfoModal(true)} setDisplayLessonInfoModal={setDisplayLessonInfoModal} thisLessonInfo={thisLessonInfo}/>}
 
-          {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
-          {lessonInfoModalDisplayed ? <ShowLessonInfoModal thisLessonInfo={thisLessonInfo} setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
+          {thisLessonInfo && <DeleteConfirmModal displayDeleteConfirmModal={displayDeleteConfirmModal} onHide={()=> setDisplayDeleteConfirmModal(true)} setDisplayDeleteConfirmModal={setDisplayDeleteConfirmModal} thisLessonInfo={thisLessonInfo}/>}
+
+
+    
 
         </div>
     ) 

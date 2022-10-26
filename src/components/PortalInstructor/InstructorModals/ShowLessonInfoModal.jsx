@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function ShowLessonInfo({show, thisLessonInfo, setShow}){
+function ShowLessonInfo({displayLessonInfoModal, thisLessonInfo, setDisplayLessonInfoModal}){
     console.log('in ShowLessonInfo, this lesson is', thisLessonInfo);
 
     const startTime = DateTime.fromISO((thisLessonInfo.start_time));
@@ -11,7 +11,7 @@ function ShowLessonInfo({show, thisLessonInfo, setShow}){
 
     return(
       <>
-        <Modal show={show}>
+        <Modal show={displayLessonInfoModal}>
         <Modal.Header>
           <Modal.Title><h1>{startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h1></Modal.Title>
         </Modal.Header>
@@ -21,7 +21,7 @@ function ShowLessonInfo({show, thisLessonInfo, setShow}){
             <h2>With: {thisLessonInfo.students_enrolled_ids[0]}</h2>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={()=>setShow(false)}>
+          <Button variant="secondary" onClick={()=>setDisplayLessonInfoModal(false)}>
             Close
           </Button>
         </Modal.Footer>
