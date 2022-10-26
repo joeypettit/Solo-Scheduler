@@ -99,6 +99,23 @@ function CalMonthView({displayReferenceDate}){
         setDisplayedDates(arrayOfWeekArrays);
     }
 
+    // this function filters through person's events (array of event objects) and attaches those 
+    // that have a start time on the inputted date (date arguement is a Luxon DateTime object);
+    function findEventsForDate(events, date){
+      console.log('in findEventsForDate, event is:', events);
+      // filter persons events array and match those with start time on this date.
+      let todaysEventArr = events.filter((thisEvent)=>{
+          // console.log('in findEventsForDate filter', date.toISODate());
+          if(DateTime.fromISO(thisEvent.start_time).toISODate()===date.toISODate()){
+              return true;
+          }
+          });
+          console.log('in findEventsForDate, array is:', todaysEventArr);
+      // return array of objects with all events associated with inputed date.
+      return todaysEventArr;
+    }
+
+
     // this function will create the jsx for each row of the calendar and wrap each one in a 
     // div with a bootstrap row class. It will then export all of jsx to build out the entire monthly calendar
     function createWeekRows(thisWeeksDates){
@@ -209,21 +226,7 @@ function CalMonthView({displayReferenceDate}){
 
 
 
-    // this function filters through person's events (array of event objects) and attaches those 
-    // that have a start time on the inputted date (date arguement is a Luxon DateTime object);
-    function findEventsForDate(events, date){
-        console.log('in findEventsForDate, event is:', events);
-        // filter persons events array and match those with start time on this date.
-        let todaysEventArr = events.filter((thisEvent)=>{
-            // console.log('in findEventsForDate filter', date.toISODate());
-            if(DateTime.fromISO(thisEvent.start_time).toISODate()===date.toISODate()){
-                return true;
-            }
-            });
-            console.log('in findEventsForDate, array is:', todaysEventArr);
-        // return array of objects with all events associated with inputed date.
-        return todaysEventArr;
-    }
+
 
     function deleteEvent(eventId){
         //~~~ dispatch event id to lessons saga

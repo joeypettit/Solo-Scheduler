@@ -12,7 +12,7 @@ function RegistrationCalendar(){
     const [displayReferenceDate, setDisplayReferenceDate] = useState(todaysDate);
 
     return(
-        <div className="cal-holder">
+        <div className="month-holder container bg-light shadow p-4 m-1">
             <CalNavigation displayReferenceDate={displayReferenceDate} setDisplayReferenceDate={setDisplayReferenceDate}/>
             <CalMonthView todaysDate={todaysDate} displayReferenceDate={displayReferenceDate} />
         </div>
