@@ -6,17 +6,25 @@ import RegistrationSuccessful from '../RegistrationModals/RegistrationSuccessful
 import ConfirmCancellation from '../RegistrationModals/ConfirmCancellation';
 
 function RegistrationMonthView({displayReferenceDate}){
+    // assign dispatch
     const dispatch = useDispatch();
 
-    const [lessonToSchedule, setLessonToSchedule] = useState();
-    const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
-    const [successModalDisplayed, setSuccessModalDisplayed] = useState(false);
-
-    const [cancelModalDisplayed, setCancelModalDisplayed] = useState(false);
-    const [lessonToCancel, setLessonToCancel] = useState();
-
+    //~~~ Current user
     const user = useSelector(store=>store.user);
 
+    //~~~ instructorLessons contains an object of lessons from selected instructor
+    const instructorLessons = useSelector(store => store.selectedInstructor);
+
+    //~~~ Lessons to edit
+    const [lessonToSchedule, setLessonToSchedule] = useState();
+    const [lessonToCancel, setLessonToCancel] = useState();
+
+    //~~~ Modal Displays
+    const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
+    const [successModalDisplayed, setSuccessModalDisplayed] = useState(false);
+    const [cancelModalDisplayed, setCancelModalDisplayed] = useState(false);
+
+    
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
     // date objects ==>      {
@@ -26,11 +34,6 @@ function RegistrationMonthView({displayReferenceDate}){
                             // is_open: 
                             // is_complete: 
                     //       }    
-
-    // instructorLessons contains an object 
-    const instructorLessons = useSelector(store => store.selectedInstructor);
-    console.log('instructorLessons is', instructorLessons);
-
 
     // This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -63,8 +66,35 @@ function RegistrationMonthView({displayReferenceDate}){
             datesInView.push({date, events: findEventsForDate(instructorLessons, date)});
             // console.log('datesInView at end of loop', datesInView);
         }
-        // set datesInView array to state
-        setDisplayedDates(datesInView);
+
+        // seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
+        let week1 =[];
+        let week2 =[];
+        let week3 =[];
+        let week4 =[];
+        let week5 =[];
+        let week6 =[];
+
+        for(let day = 0; day<datesInView.length; day++){
+          if(day<7){
+            week1.push(datesInView[day]);
+          } else if (day<14){
+            week2.push(datesInView[day]);
+          } else if (day<21){
+            week3.push(datesInView[day]);
+          } else if (day<28){
+            week4.push(datesInView[day]);
+          } else if (day<35){
+            week5.push(datesInView[day]);
+          } else if (day<42){
+            week6.push(datesInView[day]);
+          }
+        }
+
+        // set all week arrays to state in an array
+        let arrayOfWeekArrays = [week1,week2,week3,week4,week5,week6];
+        console.log('The weeks of the month arrays are', arrayOfWeekArrays);
+        setDisplayedDates(arrayOfWeekArrays);
     }
 
 

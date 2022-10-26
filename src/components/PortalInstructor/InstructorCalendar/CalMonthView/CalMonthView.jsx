@@ -11,6 +11,9 @@ import DeleteConfirmModal from '../../InstructorModals/DeleteConfirmModal';
 function CalMonthView({displayReferenceDate}){
     const dispatch = useDispatch();
 
+    //~~~ All events of current user
+    const userEvents = useSelector(store => store.lessons);
+
     // bootstrap modal
     const [displayLessonInfoModal, setDisplayLessonInfoModal] = useState(false);
     const [displayDeleteConfirmModal, setDisplayDeleteConfirmModal] = useState(false);
@@ -26,7 +29,6 @@ function CalMonthView({displayReferenceDate}){
 
     // holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
-    console.log('displayedDates is', displayedDates);
     // date objects ==>      {
                             // instructor_id: 
                             // start_time: 
@@ -34,19 +36,6 @@ function CalMonthView({displayReferenceDate}){
                             // is_open: 
                             // is_complete: 
                     //       }    
-
-    console.log('Test DateTime)', DateTime.now().toISODate());
-
-    const userEvents = useSelector(store => store.lessons);
-    console.log('userEvents is', userEvents);
-
-
-    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR
-    function fetchUserLessons(){
-        dispatch({
-            type: 'FETCH_LESSONS'
-        })
-    }
 
     //~~~ This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -255,9 +244,16 @@ function CalMonthView({displayReferenceDate}){
       setDisplayLessonInfoModal(true);
     }
 
+    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR
+    function fetchUserLessons(){
+      dispatch({
+          type: 'FETCH_LESSONS'
+      })
+    }
 
     // refresh calendar on year or month viewed changes
     useEffect(()=> createDisplayedDates(),[displayReferenceDate, userEvents]);
+    // fetch user lessons on page load
     useEffect(()=> fetchUserLessons(),[]);
 
     return (
