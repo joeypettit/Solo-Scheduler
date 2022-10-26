@@ -34,6 +34,16 @@ function RegistrationMonthView({displayReferenceDate}){
                             // is_complete: 
                     //       }    
 
+
+
+    //~~~ These functions launch bootstrap modals with correct info
+    function launchCancellationModal(selectedLesson){
+      thisLessonInfo(selectedLesson);
+      setCancelModalDisplayed(true);
+    }
+
+    //~~~~~~~~~~~~~~~~~
+
     // This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
         // get first day of the month
@@ -186,13 +196,6 @@ function RegistrationMonthView({displayReferenceDate}){
         })}
         </div>
       )
-    }
-
-
-
-    function launchCancellationModal(selectedLesson){
-      setLessonToCancel(selectedLesson);
-      setCancelModalDisplayed(true);
     }
     
 
