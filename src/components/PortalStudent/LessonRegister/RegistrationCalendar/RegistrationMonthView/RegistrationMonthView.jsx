@@ -15,13 +15,11 @@ function RegistrationMonthView({displayReferenceDate}){
     //~~~ instructorLessons contains an object of lessons from selected instructor
     const instructorLessons = useSelector(store => store.selectedInstructor);
 
-    //~~~ Lessons to edit
-    const [lessonToSchedule, setLessonToSchedule] = useState();
-    const [lessonToCancel, setLessonToCancel] = useState();
+    //~~~ Lesson to be modified
+    const [thisLessonInfo, setThisLessonInfo] = useState();
 
     //~~~ Modal Displays
     const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
-    const [successModalDisplayed, setSuccessModalDisplayed] = useState(false);
     const [cancelModalDisplayed, setCancelModalDisplayed] = useState(false);
 
     
@@ -34,6 +32,16 @@ function RegistrationMonthView({displayReferenceDate}){
                             // is_open: 
                             // is_complete: 
                     //       }    
+
+
+
+    //~~~ These functions launch bootstrap modals with correct info
+    function launchCancellationModal(selectedLesson){
+      thisLessonInfo(selectedLesson);
+      setCancelModalDisplayed(true);
+    }
+
+    //~~~~~~~~~~~~~~~~~
 
     // This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -117,13 +125,76 @@ function RegistrationMonthView({displayReferenceDate}){
 
     function launchConfirmLessonTimeModal(selectedLesson){
       console.log('in launchConfirmLessonTimeModal', selectedLesson);
-      setLessonToSchedule(selectedLesson);
+      setThisLessonInfo(selectedLesson);
       setConfirmModalDisplayed(true);
     }
 
-    function launchCancellationModal(selectedLesson){
-      setLessonToCancel(selectedLesson);
-      setCancelModalDisplayed(true);
+      //~~~ These functions launch bootstrap modals with correct info
+      function launchDeleteConfirmationModal(thisLesson){
+        setThisLessonInfo(thisLesson);
+        setCancelModalDisplayed(true);
+      }
+
+
+    // this function will create the jsx for each row of the calendar and wrap each one in a 
+    // div with a bootstrap row class. It will then export all of jsx to build out the entire monthly calendar
+    function createWeekRows(thisWeeksDates){
+      return (
+        <div className='row mx-0'>
+        {thisWeeksDates && thisWeeksDates.map((date, index)=>{
+          return(
+            <div 
+              key={index} 
+              className={`col cell rounded ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
+              >
+              <div className="d-flex justify-content-between">
+                <span className="date-holder px-1 mx-1 border border-dark rounded shadow-sm bg-light d-flex align-items-center justify-content-center">{date.date.day}</span>
+              </div>
+              <div className="">
+                  {date.events.length > 0 
+                      ? date.events.map((thisEvent, index)=>{
+                          let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)}-${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                          
+                          // if event is in the past, don't display it
+                          // else if event is in the future, but already has students registered for it
+                          // else if event has students including the current user, display as green event
+                          // else (event is in the future and has no students registered), display as blue event
+                   
+                          if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
+                            return null;
+                          } else if (!thisEvent.registered_students_ids.includes(null) && !thisEvent.registered_students_ids.includes(user.id)){
+                            return null;
+                          } else if(thisEvent.registered_students_ids.includes(user.id)){
+                            return <div key={index} className='alert alert-success p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Scheduled!</p><hr/>
+                                    <div className='d-flex justify-content-around'>
+                                      <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDeleteConfirmationModal(thisEvent)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                          <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  </div>
+                          } else{
+                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Open</p><hr/>
+                                    <div className='d-flex justify-content-around'>
+                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchConfirmLessonTimeModal(thisEvent)}>
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-square" viewBox="0 0 16 16">
+                                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                          </svg>
+                                        </button>
+                                      </div>                           
+                                   </div>
+                              }
+                          })
+                    : null }
+              </div>
+            </div>
+          )
+        })}
+        </div>
+      )
     }
     
 
@@ -131,58 +202,27 @@ function RegistrationMonthView({displayReferenceDate}){
     useEffect(()=> createDisplayedDates(),[displayReferenceDate, instructorLessons]);
 
     return (
-        <div className="cal-holder">
-          <div className='dayname'>Monday</div>
-          <div className='dayname'>Tuesday</div>
-          <div className='dayname'>Wednesday</div>
-          <div className='dayname'>Thursday</div>
-          <div className='dayname'>Friday</div>
-          <div className='dayname'>Saturday</div>
-          <div className='dayname'>Sunday</div>
-          {displayedDates.map((date, index)=>{
-            return(
-              <div 
-                key={index} 
-                className={`cell-${date.date.month === displayReferenceDate.month 
-                            ?`thismonth`:`othermonth`}${
-                              DateTime.now().toISODate() === date.date.toISODate() 
-                              ? " currentday" : ""}`}
-                >
-                <div className="cal-date">
-                  {date.date.day}
-                </div>
-                <div className="cal-event-holder">
-                    {date.events.length > 0 
-                        ? date.events.map((thisEvent, index)=>{
-                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            
-                            // if a student is registerd for a class it will appear different color and with cancel button, 
-                            // if the class is taken by someone else, it won't appear at all.
-                            // if the class is before current date, it wont appear at all
-                     
-                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
-                              return null;
-                            } else if(thisEvent.registered_students_ids.includes(user.id)){
-                              return <div key={index} className='event-holder registered'>{eventText}<button className='cancel-event' onClick={()=>launchCancellationModal(thisEvent)}>Cancel</button></div>
-                            } else if (!thisEvent.registered_students_ids.includes(null) && !thisEvent.registered_students_ids.includes(user.id)){
-                              return null;
-                            } else{
-                              return <div key={index} className='event-holder'>{eventText}<button className='select-event' onClick={()=>launchConfirmLessonTimeModal(thisEvent)}>Select</button></div>
-                            }
-                        }) : ''}
-                </div>
-              </div>
-            )
-          })}
-          {confirmModalDisplayed ? <ConfirmLessonTime lessonToSchedule={lessonToSchedule} 
-                                    setConfirmModalDisplayed={setConfirmModalDisplayed}  
-                                    setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
-                                  : null}
-          {successModalDisplayed ? <RegistrationSuccessful setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
-                                  : null}
-          {cancelModalDisplayed ? <ConfirmCancellation setCancelModalDisplayed={setCancelModalDisplayed} lessonToCancel={lessonToCancel}/> 
-                                  : null}
+      <div className="container-lg m-1">
+        <div className='row mx-0'>
+          <div className='weekday col d-flex justify-content-center'>Monday</div>
+          <div className='weekday col d-flex justify-content-center'>Tuesday</div>
+          <div className='weekday col d-flex justify-content-center'>Wednesday</div>
+          <div className='weekday col d-flex justify-content-center'>Thursday</div>
+          <div className='weekday col d-flex justify-content-center'>Friday</div>
+          <div className='weekday col d-flex justify-content-center'>Saturday</div>
+          <div className='weekday col d-flex justify-content-center'>Sunday</div>
         </div>
+
+        {createWeekRows(displayedDates[0])}
+        {createWeekRows(displayedDates[1])}
+        {createWeekRows(displayedDates[2])}
+        {createWeekRows(displayedDates[3])}
+        {createWeekRows(displayedDates[4])}
+        {createWeekRows(displayedDates[5])}
+
+        {thisLessonInfo && <ConfirmCancellation setCancelModalDisplayed={setCancelModalDisplayed} thisLessonInfo={thisLessonInfo} cancelModalDisplayed={cancelModalDisplayed}/>}
+        {thisLessonInfo && <ConfirmLessonTime setConfirmModalDisplayed={setConfirmModalDisplayed} thisLessonInfo={thisLessonInfo} confirmModalDisplayed={confirmModalDisplayed} />}
+    </div>
     ) 
 }
 export default RegistrationMonthView;

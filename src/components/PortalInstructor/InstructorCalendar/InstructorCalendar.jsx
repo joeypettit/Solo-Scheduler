@@ -16,7 +16,7 @@ function Calendar(){
 
 
     return(
-        <div className="month-holder container bg-light shadow p-4 m-1" >
+        <div className="month-holder container bg-light shadow p-4 m-1 rounded" >
             <CalNavigation displayReferenceDate={displayReferenceDate} setDisplayReferenceDate={setDisplayReferenceDate}/>
             <CalMonthView todaysDate={todaysDate} displayReferenceDate={displayReferenceDate}/>
         </div>

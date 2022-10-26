@@ -9,25 +9,25 @@ import Modal from 'react-bootstrap/Modal';
 import DeleteConfirmModal from '../../InstructorModals/DeleteConfirmModal';
 
 function CalMonthView({displayReferenceDate}){
+    //~~~ Assign dispatch
     const dispatch = useDispatch();
 
     //~~~ All events of current user
     const userEvents = useSelector(store => store.lessons);
 
-    // bootstrap modal
+    //~~~ Lesson to be modified
+    const [thisLessonInfo, setThisLessonInfo] = useState();
+
+    //~~~ display bootstrap modals
     const [displayLessonInfoModal, setDisplayLessonInfoModal] = useState(false);
     const [displayDeleteConfirmModal, setDisplayDeleteConfirmModal] = useState(false);
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
 
-    // these are for launching the information modal for a selected lesson
-    // when lessonInfoModalDisplayed is true, the modal will render with the
-    // information of the lesson in thisLessonInfo
-    const [thisLessonInfo, setThisLessonInfo] = useState();
-    const [lessonInfoModalDisplayed, setLessonModalInfoDisplayed] = useState();
 
-    // holds date objects for all dates in this view
+
+    //~~~ holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
     // date objects ==>      {
                             // instructor_id: 
@@ -36,6 +36,22 @@ function CalMonthView({displayReferenceDate}){
                             // is_open: 
                             // is_complete: 
                     //       }    
+
+
+
+    //~~~ These functions launch bootstrap modals with correct info
+    function launchDeleteConfirmationModal(thisLesson){
+      setThisLessonInfo(thisLesson);
+      setDisplayDeleteConfirmModal(true);
+    }
+
+    function launchDisplayLessonInfo(thisLesson){
+      setThisLessonInfo(thisLesson);
+      // setLessonModalInfoDisplayed(true);
+      setDisplayLessonInfoModal(true);
+    }
+
+    //~~~~~~~~~~~~
 
     //~~~ This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -69,7 +85,7 @@ function CalMonthView({displayReferenceDate}){
             // console.log('datesInView at end of loop', datesInView);
         }
 
-        // seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
+        //~~~ seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
         let week1 =[];
         let week2 =[];
         let week3 =[];
@@ -99,6 +115,23 @@ function CalMonthView({displayReferenceDate}){
         setDisplayedDates(arrayOfWeekArrays);
     }
 
+    // this function filters through person's events (array of event objects) and attaches those 
+    // that have a start time on the inputted date (date arguement is a Luxon DateTime object);
+    function findEventsForDate(events, date){
+      console.log('in findEventsForDate, event is:', events);
+      // filter persons events array and match those with start time on this date.
+      let todaysEventArr = events.filter((thisEvent)=>{
+          // console.log('in findEventsForDate filter', date.toISODate());
+          if(DateTime.fromISO(thisEvent.start_time).toISODate()===date.toISODate()){
+              return true;
+          }
+          });
+          console.log('in findEventsForDate, array is:', todaysEventArr);
+      // return array of objects with all events associated with inputed date.
+      return todaysEventArr;
+    }
+
+
     // this function will create the jsx for each row of the calendar and wrap each one in a 
     // div with a bootstrap row class. It will then export all of jsx to build out the entire monthly calendar
     function createWeekRows(thisWeeksDates){
@@ -108,7 +141,7 @@ function CalMonthView({displayReferenceDate}){
           return(
             <div 
               key={index} 
-              className={`col cell ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
+              className={`col cell rounded ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
               >
               <div className="d-flex justify-content-between">
                 <span className="date-holder px-1 mx-1 border border-dark rounded shadow-sm bg-light d-flex align-items-center justify-content-center">{date.date.day}</span>
@@ -207,53 +240,17 @@ function CalMonthView({displayReferenceDate}){
 
 
 
-
-
-    // this function filters through person's events (array of event objects) and attaches those 
-    // that have a start time on the inputted date (date arguement is a Luxon DateTime object);
-    function findEventsForDate(events, date){
-        console.log('in findEventsForDate, event is:', events);
-        // filter persons events array and match those with start time on this date.
-        let todaysEventArr = events.filter((thisEvent)=>{
-            // console.log('in findEventsForDate filter', date.toISODate());
-            if(DateTime.fromISO(thisEvent.start_time).toISODate()===date.toISODate()){
-                return true;
-            }
-            });
-            console.log('in findEventsForDate, array is:', todaysEventArr);
-        // return array of objects with all events associated with inputed date.
-        return todaysEventArr;
-    }
-
-    function deleteEvent(eventId){
-        //~~~ dispatch event id to lessons saga
-        dispatch({
-            type: 'DELETE_LESSON',
-            payload: eventId
-        });
-    }
-
-    function launchDeleteConfirmationModal(thisLesson){
-      setThisLessonInfo(thisLesson);
-      setDisplayDeleteConfirmModal(true);
-    }
-
-    function launchDisplayLessonInfo(thisLesson){
-      setThisLessonInfo(thisLesson);
-      // setLessonModalInfoDisplayed(true);
-      setDisplayLessonInfoModal(true);
-    }
-
-    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR
+    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR (used in useEffect)
     function fetchUserLessons(){
       dispatch({
           type: 'FETCH_LESSONS'
       })
     }
 
-    // refresh calendar on year or month viewed changes
+    //~~~ refresh calendar on year or month viewed changes
     useEffect(()=> createDisplayedDates(),[displayReferenceDate, userEvents]);
-    // fetch user lessons on page load
+
+    //~~~ fetch user lessons on page load
     useEffect(()=> fetchUserLessons(),[]);
 
     return (
