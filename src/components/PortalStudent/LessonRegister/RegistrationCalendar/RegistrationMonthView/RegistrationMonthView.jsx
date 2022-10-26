@@ -1,6 +1,5 @@
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
-import './RegistrationMonthView.css';
 import {useSelector, useDispatch} from 'react-redux';
 import ConfirmLessonTime from '../RegistrationModals/ConfirmLessonTime';
 import RegistrationSuccessful from '../RegistrationModals/RegistrationSuccessful';

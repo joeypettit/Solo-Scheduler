@@ -70,9 +70,124 @@ function CalMonthView({displayReferenceDate}){
             datesInView.push({date, events: findEventsForDate(userEvents, date)});
             // console.log('datesInView at end of loop', datesInView);
         }
+
+        // seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
+        let week1 =[];
+        let week2 =[];
+        let week3 =[];
+        let week4 =[];
+        let week5 =[];
+        let week6 =[];
+
+        for(let day = 0; day<datesInView.length; day++){
+          if(day<7){
+            week1.push(datesInView[day]);
+          } else if (day<14){
+            week2.push(datesInView[day]);
+          } else if (day<21){
+            week3.push(datesInView[day]);
+          } else if (day<28){
+            week4.push(datesInView[day]);
+          } else if (day<35){
+            week5.push(datesInView[day]);
+          } else if (day<42){
+            week6.push(datesInView[day]);
+          }
+        }
+
+        let arrayOfWeekArrays = [week1,week2,week3,week4,week5,week6];
+        console.log('The weeks of the month arrays are', arrayOfWeekArrays);
         // set datesInView array to state
-        setDisplayedDates(datesInView);
+        setDisplayedDates(arrayOfWeekArrays);
     }
+
+    // this function will create the jsx for each row of the calendar and wrap each one in a 
+    // div with a bootstrap row class. It will then export all of jsx to build out the entire monthly calendar
+    function createWeekRows(thisWeeksDates){
+      return (
+        <div className='row mx-0'>
+        {thisWeeksDates && thisWeeksDates.map((date, index)=>{
+          return(
+            <div 
+              key={index} 
+              className={`col cell ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
+              >
+              <div className="d-flex justify-content-between">
+                <span className="date-holder px-1 mx-1 border border-dark rounded shadow-sm bg-light d-flex align-items-center justify-content-center">{date.date.day}</span>
+                <span>
+                  <button className="btn btn-sm btn-primary mx-1" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                </span>
+              </div>
+              <div className="">
+                  {date.events.length > 0 
+                      ? date.events.map((thisEvent, index)=>{
+                          let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)}-${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
+                          
+                          // if class is in the past, and has no students, display as grey and no info button
+                          // else if class is in the past, but contained students, display as grey with info button
+                          // else if a student is registered for a class it will appear different color and with cancel button,
+                   
+                          if (DateTime.fromISO(thisEvent.start_time) < DateTime.now() && !thisEvent.students_enrolled_ids.includes(null)){
+                            return <div key={index} className='alert alert-warning p-1 m-1'><span className=''><p className='event-text'>{eventText}</p></span><hr/>
+                                      <div className='d-flex justify-content-around'>
+                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
+                                              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                            </svg>
+                                          </button>
+                                        </div>
+                                    </div>
+                                    
+                          } else if(DateTime.fromISO(thisEvent.start_time) < DateTime.now() && thisEvent.students_enrolled_ids.includes(null)){
+                            return <div key={index} className='alert alert-warning p-1 m-1'><span className=''><p className='event-text'>{eventText}</p></span></div>
+                          } else if(!thisEvent.students_enrolled_ids.includes(null)){
+                            return <div key={index} className='alert alert-success p-1 m-1 '><p className='event-text'>{eventText}</p><hr/>
+                                    <div className='d-flex justify-content-around'>
+                                      <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
+                                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                            <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                          </svg>
+                                        </button>
+                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>deleteEvent(thisEvent.lesson_id)}>
+                                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    </div>
+                          } else{
+                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><hr/>
+                                    <div className='d-flex justify-content-around'>
+                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
+                                              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                            </svg>
+                                          </button>
+                                          <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>deleteEvent(thisEvent.lesson_id)}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                              <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                          </button>
+                                        </div>                           
+                                   </div>
+                          }})
+                      : null }
+              </div>
+            </div>
+          )
+        })}
+        </div>
+      )
+
+    }
+
+
+
 
 
     // this function filters through person's events (array of event objects) and attaches those 
@@ -112,47 +227,27 @@ function CalMonthView({displayReferenceDate}){
     useEffect(()=> fetchUserLessons(),[]);
 
     return (
-        <div className="cal-holder">
-          <div className='dayname'>Monday</div>
-          <div className='dayname'>Tuesday</div>
-          <div className='dayname'>Wednesday</div>
-          <div className='dayname'>Thursday</div>
-          <div className='dayname'>Friday</div>
-          <div className='dayname'>Saturday</div>
-          <div className='dayname'>Sunday</div>
-          {displayedDates.map((date, index)=>{
-            return(
-              <div 
-                key={index} 
-                className={`cell-${date.date.month === displayReferenceDate.month 
-                            ?`thismonth`:`othermonth`}${
-                              DateTime.now().toISODate() === date.date.toISODate() 
-                              ? " currentday" : ""}`}
-                >
-                <div className="cal-date">
-                  {date.date.day}
-                  <button className="add-event" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
-                </div>
-                <div className="cal-event-holder">
-                    {date.events.length > 0 
-                        ? date.events.map((thisEvent, index)=>{
-                            let eventText = `${DateTime.fromISO(thisEvent.start_time).toLocaleString(DateTime.TIME_SIMPLE)} to ${DateTime.fromISO(thisEvent.end_time).toLocaleString(DateTime.TIME_SIMPLE)}`
-                            
-                            // if the class is before current date, it wont appear at all
-                            // if a student is registerd for a class it will appear different color and with cancel button,
-                     
-                            if (DateTime.fromISO(thisEvent.start_time) < DateTime.now()){
-                              return <div key={index} className='event-holder past'>{eventText}<button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
-                            } else if(!thisEvent.students_enrolled_ids.includes(null)){
-                              return <div key={index} className='event-holder registered'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button><button onClick={()=>launchDisplayLessonInfo(thisEvent)}>Info</button></div>
-                            } else{
-                              return <div key={index} className='event-holder'>{eventText}<button className='delete-event' onClick={()=>deleteEvent(thisEvent.lesson_id)}>X</button></div>
-                            }})
-                        : null }
-                </div>
-              </div>
-            )
-          })}
+        <div className="container-lg m-1">
+          <div className='row'>
+            <div className='col'>Monday</div>
+            <div className='col'>Tuesday</div>
+            <div className='col'>Wednesday</div>
+            <div className='col'>Thursday</div>
+            <div className='col'>Friday</div>
+            <div className='col'>Saturday</div>
+            <div className='col'>Sunday</div>
+          </div>
+
+          {createWeekRows(displayedDates[0])}
+          {createWeekRows(displayedDates[1])}
+          {createWeekRows(displayedDates[2])}
+          {createWeekRows(displayedDates[3])}
+          {createWeekRows(displayedDates[4])}
+          {createWeekRows(displayedDates[5])}
+
+
+
+
           {displayAddForm ? <AddEventForm setDisplayAddForm={setDisplayAddForm} dateToModify={dateToModify}/> : null}
           {lessonInfoModalDisplayed ? <ShowLessonInfoModal thisLessonInfo={thisLessonInfo} setLessonModalInfoDisplayed={setLessonModalInfoDisplayed}/> : null}
 

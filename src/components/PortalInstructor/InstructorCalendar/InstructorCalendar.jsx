@@ -4,6 +4,7 @@ import './InstructorCalendar.css';
 import {DateTime} from 'luxon';
 import {useState, useEffect} from 'react';
 
+
 function Calendar(){
     const todaysDate = DateTime.now();
 
@@ -15,7 +16,7 @@ function Calendar(){
 
 
     return(
-        <div className="cal-holder">
+        <div className="month-holder container bg-light shadow p-4 m-1" >
             <CalNavigation displayReferenceDate={displayReferenceDate} setDisplayReferenceDate={setDisplayReferenceDate}/>
             <CalMonthView todaysDate={todaysDate} displayReferenceDate={displayReferenceDate}/>
         </div>
