@@ -1,6 +1,6 @@
 import {DateTime} from 'luxon';
 import {useEffect, useState} from 'react';
-import './CalMonthView.css';
+import './InstructorMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
 import ShowLessonInfoModal from '../../InstructorModals/ShowLessonInfoModal';
@@ -256,13 +256,13 @@ function CalMonthView({displayReferenceDate}){
     return (
         <div className="container-lg m-1">
           <div className='row mx-0'>
-            <div className='weekday col d-flex justify-content-center'>Monday</div>
-            <div className='weekday col d-flex justify-content-center'>Tuesday</div>
-            <div className='weekday col d-flex justify-content-center'>Wednesday</div>
-            <div className='weekday col d-flex justify-content-center'>Thursday</div>
-            <div className='weekday col d-flex justify-content-center'>Friday</div>
-            <div className='weekday col d-flex justify-content-center'>Saturday</div>
-            <div className='weekday col d-flex justify-content-center'>Sunday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Monday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Tuesday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Wednesday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Thursday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Friday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Saturday</div>
+            <div className='weekday col h4 text-muted d-flex justify-content-center'>Sunday</div>
           </div>
 
           {createWeekRows(displayedDates[0])}

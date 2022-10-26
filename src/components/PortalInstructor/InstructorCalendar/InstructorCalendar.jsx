@@ -1,5 +1,5 @@
-import CalMonthView from "./CalMonthView/CalMonthView";
-import CalNavigation from "./CalNavigation/CalNavigation";
+import CalMonthView from "./InstructorMonthView/InstructorMonthView";
+import CalNavigation from "../../CalNavigation/CalNavigation"
 import './InstructorCalendar.css';
 import {DateTime} from 'luxon';
 import {useState, useEffect} from 'react';
