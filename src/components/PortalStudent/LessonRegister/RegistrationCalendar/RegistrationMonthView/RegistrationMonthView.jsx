@@ -126,7 +126,7 @@ function RegistrationMonthView({displayReferenceDate}){
 
     function launchConfirmLessonTimeModal(selectedLesson){
       console.log('in launchConfirmLessonTimeModal', selectedLesson);
-      setLessonToSchedule(selectedLesson);
+      setThisLessonInfo(selectedLesson);
       setConfirmModalDisplayed(true);
     }
 
@@ -146,7 +146,7 @@ function RegistrationMonthView({displayReferenceDate}){
           return(
             <div 
               key={index} 
-              className={`col cell ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
+              className={`col cell rounded ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
               >
               <div className="d-flex justify-content-between">
                 <span className="date-holder px-1 mx-1 border border-dark rounded shadow-sm bg-light d-flex align-items-center justify-content-center">{date.date.day}</span>
@@ -168,7 +168,7 @@ function RegistrationMonthView({displayReferenceDate}){
                           } else if(thisEvent.registered_students_ids.includes(user.id)){
                             return <div key={index} className='alert alert-success p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Scheduled!</p><hr/>
                                     <div className='d-flex justify-content-around'>
-                                    <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
+                                    <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchConfirmLessonTimeModal(thisEvent)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
                                           <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                           <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
@@ -183,9 +183,9 @@ function RegistrationMonthView({displayReferenceDate}){
                                     </div>
                                   </div>
                           } else{
-                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><hr/>
+                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Open</p><hr/>
                                     <div className='d-flex justify-content-around'>
-                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
+                                        <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchConfirmLessonTimeModal(thisEvent)}>
                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-square" viewBox="0 0 16 16">
                                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -210,26 +210,26 @@ function RegistrationMonthView({displayReferenceDate}){
 
     return (
       <div className="container-lg m-1">
-      <div className='row mx-0'>
-        <div className='weekday col d-flex justify-content-center'>Monday</div>
-        <div className='weekday col d-flex justify-content-center'>Tuesday</div>
-        <div className='weekday col d-flex justify-content-center'>Wednesday</div>
-        <div className='weekday col d-flex justify-content-center'>Thursday</div>
-        <div className='weekday col d-flex justify-content-center'>Friday</div>
-        <div className='weekday col d-flex justify-content-center'>Saturday</div>
-        <div className='weekday col d-flex justify-content-center'>Sunday</div>
-      </div>
-
-      {createWeekRows(displayedDates[0])}
-      {createWeekRows(displayedDates[1])}
-      {createWeekRows(displayedDates[2])}
-      {createWeekRows(displayedDates[3])}
-      {createWeekRows(displayedDates[4])}
-      {createWeekRows(displayedDates[5])}
-
-
-      {thisLessonInfo && <ConfirmCancellation setCancelModalDisplayed={setCancelModalDisplayed} thisLessonInfo={thisLessonInfo} cancelModalDisplayed={cancelModalDisplayed}/>}
+        <div className='row mx-0'>
+          <div className='weekday col d-flex justify-content-center'>Monday</div>
+          <div className='weekday col d-flex justify-content-center'>Tuesday</div>
+          <div className='weekday col d-flex justify-content-center'>Wednesday</div>
+          <div className='weekday col d-flex justify-content-center'>Thursday</div>
+          <div className='weekday col d-flex justify-content-center'>Friday</div>
+          <div className='weekday col d-flex justify-content-center'>Saturday</div>
+          <div className='weekday col d-flex justify-content-center'>Sunday</div>
         </div>
+
+        {createWeekRows(displayedDates[0])}
+        {createWeekRows(displayedDates[1])}
+        {createWeekRows(displayedDates[2])}
+        {createWeekRows(displayedDates[3])}
+        {createWeekRows(displayedDates[4])}
+        {createWeekRows(displayedDates[5])}
+
+        {thisLessonInfo && <ConfirmCancellation setCancelModalDisplayed={setCancelModalDisplayed} thisLessonInfo={thisLessonInfo} cancelModalDisplayed={cancelModalDisplayed}/>}
+        {thisLessonInfo && <ConfirmLessonTime setConfirmModalDisplayed={setConfirmModalDisplayed} thisLessonInfo={thisLessonInfo} confirmModalDisplayed={confirmModalDisplayed} setSuccessModalDisplayed={setSuccessModalDisplayed}/>}
+    </div>
     ) 
 }
 export default RegistrationMonthView;

@@ -141,7 +141,7 @@ function CalMonthView({displayReferenceDate}){
           return(
             <div 
               key={index} 
-              className={`col cell ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
+              className={`col cell rounded ${date.date.month === displayReferenceDate.month ? (DateTime.now().toISODate() === date.date.toISODate() ? `bg-primary m-1 px-0 py-1 shadow-sm border bg-opacity-50` : `bg-white m-1 px-0 py-1 shadow-sm border`): `bg-secondary m-1 px-0 py-1 shadow-sm border bg-opacity-10`}`}
               >
               <div className="d-flex justify-content-between">
                 <span className="date-holder px-1 mx-1 border border-dark rounded shadow-sm bg-light d-flex align-items-center justify-content-center">{date.date.day}</span>

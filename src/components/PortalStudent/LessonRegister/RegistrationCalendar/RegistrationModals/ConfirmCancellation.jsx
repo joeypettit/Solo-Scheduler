@@ -21,8 +21,6 @@ function ConfirmCancellation({thisLessonInfo, setCancelModalDisplayed,cancelModa
         setCancelModalDisplayed(false);
     }
 
-
-
     return(
         <>
         <Modal show={cancelModalDisplayed}>
@@ -36,7 +34,7 @@ function ConfirmCancellation({thisLessonInfo, setCancelModalDisplayed,cancelModa
         </Modal.Body>
         <Modal.Footer>
             <Button variant="danger" onClick={()=>CancelReservation()}>
-                Delete
+                Cancel
             </Button>
             <Button variant="secondary" onClick={()=>setCancelModalDisplayed(false)}>
                 Close
