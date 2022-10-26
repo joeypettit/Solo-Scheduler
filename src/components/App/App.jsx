@@ -37,7 +37,7 @@ function App() {
     <div className='container overflow-auto'>
       <Router>
         <Nav />
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center my-4'>
         <Switch>
           
             {/* ~~~~~ Non-User Routes ~~~~~ */}
@@ -69,7 +69,6 @@ function App() {
               <StudentLessonSelect />
             </StudentRoute>
 
-
             {/* ~~~~~ Instructor Routes ~~~~~ */}
             <InstructorRoute exact path="/instructor-home">
               <InstructorHome />
@@ -81,11 +80,9 @@ function App() {
               <InstructorSchedule />
             </InstructorRoute>
  
-            
-          
-          <Route>
-              <h1>404</h1>
-          </Route>
+            <Route>
+                <h1>404</h1>
+            </Route>
         </Switch>
         </div>
       </Router>
