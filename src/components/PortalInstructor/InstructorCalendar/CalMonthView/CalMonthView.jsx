@@ -9,25 +9,25 @@ import Modal from 'react-bootstrap/Modal';
 import DeleteConfirmModal from '../../InstructorModals/DeleteConfirmModal';
 
 function CalMonthView({displayReferenceDate}){
+    //~~~ Assign dispatch
     const dispatch = useDispatch();
 
     //~~~ All events of current user
     const userEvents = useSelector(store => store.lessons);
 
-    // bootstrap modal
+    //~~~ Lesson to be modified
+    const [thisLessonInfo, setThisLessonInfo] = useState();
+
+    //~~~ display bootstrap modals
     const [displayLessonInfoModal, setDisplayLessonInfoModal] = useState(false);
     const [displayDeleteConfirmModal, setDisplayDeleteConfirmModal] = useState(false);
 
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [dateToModify, setDateToModify] = useState();
 
-    // these are for launching the information modal for a selected lesson
-    // when lessonInfoModalDisplayed is true, the modal will render with the
-    // information of the lesson in thisLessonInfo
-    const [thisLessonInfo, setThisLessonInfo] = useState();
-    const [lessonInfoModalDisplayed, setLessonModalInfoDisplayed] = useState();
 
-    // holds date objects for all dates in this view
+
+    //~~~ holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
     // date objects ==>      {
                             // instructor_id: 
@@ -36,6 +36,22 @@ function CalMonthView({displayReferenceDate}){
                             // is_open: 
                             // is_complete: 
                     //       }    
+
+
+
+    //~~~ These functions launch bootstrap modals with correct info
+    function launchDeleteConfirmationModal(thisLesson){
+      setThisLessonInfo(thisLesson);
+      setDisplayDeleteConfirmModal(true);
+    }
+
+    function launchDisplayLessonInfo(thisLesson){
+      setThisLessonInfo(thisLesson);
+      // setLessonModalInfoDisplayed(true);
+      setDisplayLessonInfoModal(true);
+    }
+
+    //~~~~~~~~~~~~
 
     //~~~ This function creates an array of date objects for all of the days in current view
     function createDisplayedDates(){
@@ -69,7 +85,7 @@ function CalMonthView({displayReferenceDate}){
             // console.log('datesInView at end of loop', datesInView);
         }
 
-        // seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
+        //~~~ seperate dates into individual week arrays (so we can place them in bootstrap rows on render)
         let week1 =[];
         let week2 =[];
         let week3 =[];
@@ -224,39 +240,17 @@ function CalMonthView({displayReferenceDate}){
 
 
 
-
-
-
-
-    function deleteEvent(eventId){
-        //~~~ dispatch event id to lessons saga
-        dispatch({
-            type: 'DELETE_LESSON',
-            payload: eventId
-        });
-    }
-
-    function launchDeleteConfirmationModal(thisLesson){
-      setThisLessonInfo(thisLesson);
-      setDisplayDeleteConfirmModal(true);
-    }
-
-    function launchDisplayLessonInfo(thisLesson){
-      setThisLessonInfo(thisLesson);
-      // setLessonModalInfoDisplayed(true);
-      setDisplayLessonInfoModal(true);
-    }
-
-    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR
+    //~~~ FETCH ALL LESSONS OF LOGGED IN INSTRUCTOR (used in useEffect)
     function fetchUserLessons(){
       dispatch({
           type: 'FETCH_LESSONS'
       })
     }
 
-    // refresh calendar on year or month viewed changes
+    //~~~ refresh calendar on year or month viewed changes
     useEffect(()=> createDisplayedDates(),[displayReferenceDate, userEvents]);
-    // fetch user lessons on page load
+
+    //~~~ fetch user lessons on page load
     useEffect(()=> fetchUserLessons(),[]);
 
     return (

@@ -15,9 +15,8 @@ function RegistrationMonthView({displayReferenceDate}){
     //~~~ instructorLessons contains an object of lessons from selected instructor
     const instructorLessons = useSelector(store => store.selectedInstructor);
 
-    //~~~ Lessons to edit
-    const [lessonToSchedule, setLessonToSchedule] = useState();
-    const [lessonToCancel, setLessonToCancel] = useState();
+    //~~~ Lesson to be modified
+    const [thisLessonInfo, setThisLessonInfo] = useState();
 
     //~~~ Modal Displays
     const [confirmModalDisplayed, setConfirmModalDisplayed] = useState(false);
@@ -219,9 +218,10 @@ function RegistrationMonthView({displayReferenceDate}){
       {createWeekRows(displayedDates[4])}
       {createWeekRows(displayedDates[5])}
 
-          
+
+
             
-          {confirmModalDisplayed ? <ConfirmLessonTime lessonToSchedule={lessonToSchedule} 
+          {thisLessonInfo ? <ConfirmLessonTime lessonToSchedule={lessonToSchedule} 
                                     setConfirmModalDisplayed={setConfirmModalDisplayed}  
                                     setSuccessModalDisplayed={setSuccessModalDisplayed}/> 
                                   : null}
