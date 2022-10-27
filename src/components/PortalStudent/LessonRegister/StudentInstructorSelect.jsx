@@ -38,7 +38,7 @@ function InstructorSelect() {
         <h1 className='display-4 text-muted my-3'>Choose Your Instructor</h1>
         {instructors !==[] ? instructors.map((instructor, index)=>{
           return (<Card key={index} className='inst-card bg-light shadow-sm my-2' onClick={()=>handleSelection(instructor.id)}>
-                    <Card.Body className='d-flex flex-row'>
+                    <Card.Body className='inst-card-body d-flex flex-row'>
                       <div className='image-holder'>
                         <img className="card-img rounded-circle"
                             src={instructor.image_path}/>

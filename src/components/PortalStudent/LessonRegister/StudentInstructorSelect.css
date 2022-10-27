@@ -9,7 +9,8 @@
     margin: 0 auto;
 }
 
-.inst-card:hover{
+
+.inst-card-body:hover{
     cursor: pointer;
-    background-color:rgba(0, 0, 0, 0.041)
+    background-color:rgba(0, 0, 0, 0.041);
 }
