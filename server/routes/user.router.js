@@ -53,7 +53,7 @@ router.post('/logout', (req, res) => {
 //~~~ Fetches all Instructors
 router.get('/all-instructors', rejectUnauthenticated, (req, res) => {
   console.log()
-  let queryText = `SELECT "id", "first_name", "last_name" FROM "user" WHERE "is_instructor"=true;`;
+  let queryText = `SELECT "id", "first_name", "last_name", "image_path" FROM "user" WHERE "is_instructor"=true;`;
   pool
   .query(queryText)
   .then((response)=>{

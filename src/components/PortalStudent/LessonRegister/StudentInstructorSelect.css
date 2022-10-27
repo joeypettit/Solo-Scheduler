@@ -1,0 +1,15 @@
+.card-img{
+    height: auto;
+    width: 100px;
+    object-fit: contain;
+}
+
+.inst-card{
+    max-width: 475px;
+    margin: 0 auto;
+}
+
+.inst-card:hover{
+    cursor: pointer;
+    background-color:rgba(0, 0, 0, 0.041)
+}
