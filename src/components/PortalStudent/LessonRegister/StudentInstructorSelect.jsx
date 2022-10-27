@@ -3,6 +3,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import StudentSchedule from '../StudentSchedule/StudentSchedule';
 import {useHistory} from 'react-router-dom';
 import {useEffect} from 'react';
+import Card from 'react-bootstrap/Card';
+import './StudentInstructorSelect.css';
 
 function InstructorSelect() {
   const history = useHistory();
@@ -32,13 +34,22 @@ function InstructorSelect() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
   return (
-    <div className="container">
-        <h1>Choose Your Instructor</h1>
+    <div className='container text-center'> 
+        <h1 className='display-4 text-muted my-3'>Choose Your Instructor</h1>
         {instructors !==[] ? instructors.map((instructor, index)=>{
-          return (<div key={index} className="instructor-cards" onClick={()=>handleSelection(instructor.id)}>
-                  {instructor.first_name} {instructor.last_name}</div>)
-        }) : null}
-    </div>
+          return (<Card key={index} className='inst-card bg-light shadow-sm my-2' onClick={()=>handleSelection(instructor.id)}>
+                    <Card.Body className='inst-card-body d-flex flex-row'>
+                      <div className='image-holder'>
+                        <img className="card-img rounded-circle"
+                            src={instructor.image_path}/>
+                      </div>
+                      <div  className='container d-flex justify-content-center align-items-center' >
+                        <h1>{instructor.first_name} {instructor.last_name}</h1>
+                      </div>
+                    </Card.Body>
+                  </Card>)})
+         : null }
+         </div>
   );
 }
 

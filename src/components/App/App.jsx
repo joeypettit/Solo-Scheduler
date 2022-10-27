@@ -7,7 +7,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Nav from '../Nav/Nav';
+import NavigationBar from '../NavigationBar/NavigationBar';
 import Footer from '../Footer/Footer';
 import LandingPage from '../LandingPage/LandingPage';
 import InstructorHome from '../PortalInstructor/InstructorHome/InstructorHome';
@@ -34,10 +34,9 @@ function App() {
   }, []);
 
   return (
-    <div className='container overflow-auto'>
       <Router>
-        <Nav />
-        <div className='d-flex justify-content-center my-4'>
+        <NavigationBar />
+        <div className='container d-flex justify-content-center my-4'>
         <Switch>
           
             {/* ~~~~~ Non-User Routes ~~~~~ */}
@@ -86,7 +85,6 @@ function App() {
         </Switch>
         </div>
       </Router>
-    </div>
   );
 }
 

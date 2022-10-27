@@ -53,7 +53,7 @@ router.post('/logout', (req, res) => {
 //~~~ Fetches all Instructors
 router.get('/all-instructors', rejectUnauthenticated, (req, res) => {
   console.log()
-  let queryText = `SELECT "id", "first_name", "last_name" FROM "user" WHERE "is_instructor"=true;`;
+  let queryText = `SELECT "id", "first_name", "last_name", "image_path" FROM "user" WHERE "is_instructor"=true;`;
   pool
   .query(queryText)
   .then((response)=>{
@@ -89,6 +89,17 @@ router.get('/checkusername/:username', (req, res) => {
   }).catch((error) => console.log('Error checking username'));
 });
 
+//~~~ This route selects all students
+router.get('/all-students', rejectUnauthenticated, (req, res)=>{
+  let queryText=`SELECT "first_name", "last_name", "id" FROM "user" WHERE "is_instructor"=false;`;
+
+  pool
+  .query(queryText)
+  .then((response)=>{
+    res.send(response.rows);
+  })
+  .catch((error) => console.log('Error SELECT all students', error));
+});
 
 
 module.exports = router;
