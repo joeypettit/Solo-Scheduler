@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function ConfirmLessonTime({thisLessonInfo, confirmModalDisplayed, setConfirmModalDisplayed, setSuccessModalDisplayed}){
+function ConfirmLessonTime({thisLessonInfo, confirmModalDisplayed, setConfirmModalDisplayed,}){
     const dispatch = useDispatch();
 
     console.log('in ConfirmLessonTime', thisLessonInfo);
@@ -20,8 +20,6 @@ function ConfirmLessonTime({thisLessonInfo, confirmModalDisplayed, setConfirmMod
         })
         // close this modal
         setConfirmModalDisplayed(false);
-        // open registration successful modal
-        setSuccessModalDisplayed(true);
     }
 
     return (
