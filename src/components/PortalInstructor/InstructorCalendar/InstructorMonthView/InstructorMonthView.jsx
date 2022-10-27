@@ -4,8 +4,6 @@ import './InstructorMonthView.css';
 import AddEventForm from '../AddEventForm/AddEventForm';
 import {useSelector, useDispatch} from 'react-redux';
 import ShowLessonInfoModal from '../../InstructorModals/ShowLessonInfoModal';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import DeleteConfirmModal from '../../InstructorModals/DeleteConfirmModal';
 
 function CalMonthView({displayReferenceDate}){
@@ -22,8 +20,8 @@ function CalMonthView({displayReferenceDate}){
     const [displayLessonInfoModal, setDisplayLessonInfoModal] = useState(false);
     const [displayDeleteConfirmModal, setDisplayDeleteConfirmModal] = useState(false);
 
-    const [displayAddForm, setDisplayAddForm] = useState(false);
-    const [dateToModify, setDateToModify] = useState();
+    const [displayAddFormModal, setDisplayAddFormModal] = useState(false);
+    const [dateToAdd, setDateToAdd] = useState();
 
 
 
@@ -146,7 +144,7 @@ function CalMonthView({displayReferenceDate}){
               <div className="d-flex justify-content-between">
                 <span className="date-holder px-1 mx-1 border border-dark rounded shadow-sm bg-light d-flex align-items-center justify-content-center">{date.date.day}</span>
                 <span>
-                  <button className="btn btn-sm btn-primary mx-1" onClick={()=> {setDisplayAddForm(true), setDateToModify(date.date.toISODate())}}>+</button>
+                  <button className="btn btn-sm btn-primary mx-1" onClick={()=> {setDisplayAddFormModal(true), setDateToAdd(date.date.toISODate())}}>+</button>
                 </span>
               </div>
               <div className="">
@@ -159,7 +157,7 @@ function CalMonthView({displayReferenceDate}){
                           // else if a student is registered for a class it will appear different color and with cancel button,
                    
                           if (DateTime.fromISO(thisEvent.start_time) < DateTime.now() && !thisEvent.students_enrolled_ids.includes(null)){
-                            return <div key={index} className='alert alert-warning p-1 m-1'><span className=''><p className='event-text'>{eventText}</p></span><hr/>
+                            return <div key={index} className='alert alert-warning p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Past Lesson</p><hr/>
                                       <div className='d-flex justify-content-around'>
                                         <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -177,7 +175,7 @@ function CalMonthView({displayReferenceDate}){
                                     </div>
                                     
                           } else if(DateTime.fromISO(thisEvent.start_time) < DateTime.now() && thisEvent.students_enrolled_ids.includes(null)){
-                            return <div key={index} className='alert alert-warning p-1 m-1'><p className='event-text'>{eventText}</p><hr/>
+                            return <div key={index} className='alert alert-secondary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Unclaimed Time</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                     <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -194,7 +192,7 @@ function CalMonthView({displayReferenceDate}){
                                     </div>
                                   </div>
                           } else if(!thisEvent.students_enrolled_ids.includes(null)){
-                            return <div key={index} className='alert alert-success p-1 m-1 '><p className='event-text'>{eventText}</p><hr/>
+                            return <div key={index} className='alert alert-success p-1 m-1 '><p className='event-text'>{eventText}</p><p className='event-text'>Scheduled!</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                       <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -211,7 +209,7 @@ function CalMonthView({displayReferenceDate}){
                                       </div>
                                     </div>
                           } else{
-                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><hr/>
+                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Open Time</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                         <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -244,7 +242,13 @@ function CalMonthView({displayReferenceDate}){
     function fetchUserLessons(){
       dispatch({
           type: 'FETCH_LESSONS'
-      })
+      });
+    }
+
+    function fetchStudentList(){
+      dispatch({
+        type: 'FETCH_STUDENT_LIST'
+      });
     }
 
     //~~~ refresh calendar on year or month viewed changes
@@ -252,6 +256,8 @@ function CalMonthView({displayReferenceDate}){
 
     //~~~ fetch user lessons on page load
     useEffect(()=> fetchUserLessons(),[]);
+
+    useEffect(()=> fetchStudentList(),[]);
 
     return (
         <div className="container-lg m-1">
@@ -274,11 +280,8 @@ function CalMonthView({displayReferenceDate}){
 
           {/* conditional render of modals (if this lessonInfo) */}
           {thisLessonInfo && <ShowLessonInfoModal displayLessonInfoModal={displayLessonInfoModal} onHide={()=> setDisplayLessonInfoModal(true)} setDisplayLessonInfoModal={setDisplayLessonInfoModal} thisLessonInfo={thisLessonInfo}/>}
+          {dateToAdd && <AddEventForm displayAddFormModal={displayAddFormModal} onHide={()=> setDisplayAddFormModal(true)} setDisplayAddFormModal={setDisplayAddFormModal} dateToAdd={dateToAdd}/>}
           {thisLessonInfo && <DeleteConfirmModal displayDeleteConfirmModal={displayDeleteConfirmModal} onHide={()=> setDisplayDeleteConfirmModal(true)} setDisplayDeleteConfirmModal={setDisplayDeleteConfirmModal} thisLessonInfo={thisLessonInfo}/>}
-
-
-    
-
         </div>
     ) 
 }

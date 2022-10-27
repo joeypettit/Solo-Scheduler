@@ -176,7 +176,7 @@ function RegistrationMonthView({displayReferenceDate}){
                                     </div>
                                   </div>
                           } else{
-                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Open</p><hr/>
+                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Open Time</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                         <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchConfirmLessonTimeModal(thisEvent)}>
                                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-plus-square" viewBox="0 0 16 16">

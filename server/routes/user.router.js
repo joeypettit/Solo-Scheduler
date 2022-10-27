@@ -89,6 +89,17 @@ router.get('/checkusername/:username', (req, res) => {
   }).catch((error) => console.log('Error checking username'));
 });
 
+//~~~ This route selects all students
+router.get('/all-students', rejectUnauthenticated, (req, res)=>{
+  let queryText=`SELECT "first_name", "last_name", "id" FROM "user" WHERE "is_instructor"=false;`;
+
+  pool
+  .query(queryText)
+  .then((response)=>{
+    res.send(response.rows);
+  })
+  .catch((error) => console.log('Error SELECT all students', error));
+});
 
 
 module.exports = router;

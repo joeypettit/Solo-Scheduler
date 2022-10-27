@@ -34,7 +34,7 @@ function App() {
   }, []);
 
   return (
-    <div className='container overflow-auto'>
+    <div className='container'>
       <Router>
         <Nav />
         <div className='d-flex justify-content-center my-4'>
