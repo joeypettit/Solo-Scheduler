@@ -3,6 +3,7 @@ import LogOutButton from '../../LogOutButton/LogOutButton';
 import {useSelector} from 'react-redux';
 import StudentSchedule from '../StudentSchedule/StudentSchedule';
 import {useHistory} from 'react-router-dom';
+import Button from 'react-bootstrap/Button'
 
 function StudentHome() {
     const history = useHistory();
@@ -13,8 +14,7 @@ function StudentHome() {
             <h1>Student Home</h1>
             <h2>Welcome, {user.username}!</h2>
             <p>Your ID is: {user.id}</p>
-            <button className="btn" onClick={()=> history.push("/student-schedule")}>View Your Schedule</button>
-            <button className="btn" onClick={()=> history.push("/student-instructor-select")}>Schedule Lessons</button>
+            <Button variant="primary" onClick={()=> history.push("/student-instructor-select")}>Schedule Lessons</Button>
             <LogOutButton className="btn" />
         </div>
   );

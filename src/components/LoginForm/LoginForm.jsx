@@ -34,88 +34,49 @@ function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
           <Modal.Title><h2>Login</h2></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form className="formPanel" onSubmit={login}>
+          <form onSubmit={login}>
             
             {errors.loginMessage && (
               <h3 className="alert" role="alert">
                 {errors.loginMessage}
               </h3>
             )}
+            <div className="form-group">
+              <label htmlFor="username">
+              Username:
+                <input
+                  type="text"
+                  name="username"
+                  required
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </label>
+            </div>
             <div>
-            <label htmlFor="username">
-            Username:
-              <input
-                type="text"
-                name="username"
-                required
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:
-              <input
-                type="password"
-                name="password"
-                required
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <Button variant="secondary" onClick={()=>setDisplayLoginModal(false)}>
-              Back
-            </Button>
-            <Button variant="primary" type="submit" name="submit">
-              Login
-            </Button>
-          </div>
+              <label htmlFor="password">
+                Password:
+                <input
+                  type="password"
+                  name="password"
+                  required
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                />
+              </label>
+            </div>
+            <div>
+              <Button variant="secondary" onClick={()=>setDisplayLoginModal(false)}>
+                Back
+              </Button>
+              <Button variant="primary" type="submit" name="submit">
+                Login
+              </Button>
+            </div>
           </form>
         </Modal.Body>
-        <Modal.Footer>
-          
-        </Modal.Footer>
-      </Modal>
-    
-    {/* <form className="formPanel" onSubmit={login}>
-      <h2>Login</h2>
-      {errors.loginMessage && (
-        <h3 className="alert" role="alert">
-          {errors.loginMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Log In" />
-      </div>
-    </form> */}
-  </>
+      </Modal>  
+    </>
   );
 }
 

@@ -15,7 +15,9 @@ function LessonSelect() {
 
   return (
     <div className="container">
-        <h1>Choose your lesson</h1>
+      <div className='m-3'>
+        <h1 className='d-flex justify-content-center text-muted'>Select A Lesson Time</h1>
+      </div>
         <RegistrationCalendar />
     </div>
   );

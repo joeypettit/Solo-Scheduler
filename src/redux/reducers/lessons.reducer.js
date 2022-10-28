@@ -1,3 +1,5 @@
+
+// this reducer holds all the lessons of a logged in instructor
 const lessonsReducer = (state = [], action) => {
     switch (action.type) {
       case 'SET_LESSONS':
