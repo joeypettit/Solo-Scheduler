@@ -134,8 +134,7 @@ function RegistrationMonthView({displayReferenceDate}){
         setThisLessonInfo(thisLesson);
         setCancelModalDisplayed(true);
       }
-
-
+      
     // this function will create the jsx for each row of the calendar and wrap each one in a 
     // div with a bootstrap row class. It will then export all of jsx to build out the entire monthly calendar
     function createWeekRows(thisWeeksDates){

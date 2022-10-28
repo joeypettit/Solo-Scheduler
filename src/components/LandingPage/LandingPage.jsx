@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Calendar from '../PortalInstructor/InstructorCalendar/InstructorCalendar';
+import Button from 'react-bootstrap/Button';
 import './LandingPage.css';
+import LoginFormModal from '../LoginForm/LoginForm';
 
 // CUSTOM COMPONENTS
 import RegisterForm from '../RegisterForm/RegisterForm';
@@ -9,27 +11,31 @@ import RegisterForm from '../RegisterForm/RegisterForm';
 function LandingPage() {
   const history = useHistory();
 
+  const [displayLoginModal, setDisplayLoginModal] = useState(false);
+
   const onLogin = (event) => {
     history.push('/login');
   };
 
   return (
-    <div className='container'>
-      <div className="col">
-        <div className="row justify-content-center">
-          <div className="col-4">
-            <h2 className='text-center'>Schedule</h2>
+    <div className=' container'>
+        <div className='container'>
+          <div className="col">
+              <div className="row justify-content-center">
+                <div className="col-4">
+                  <h4 className='text-center'>Schedule</h4>
+                </div>
+              </div>
+              <div className="row justify-content-center">
+                <div className="col-4">
+                  <h3 className='text-center'>Plan</h3>
+                </div>
+                <div className='col-4'></div>
+                <div className="col-4">
+                  <h3 className='text-center'>Meet</h3>
+                </div>
+            </div>
           </div>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-4">
-            <h2 className='text-center'>Plan</h2>
-          </div>
-          <div className='col-4'></div>
-          <div className="col-4">
-            <h2 className='text-center'>Meet</h2>
-          </div>
-        </div>
           
         <div className="row my-4">
         <div className="col-4"></div>
@@ -46,57 +52,25 @@ function LandingPage() {
       </div>
       <div className="col-4"></div>
           </div>
-        </div>
-        
-
-
-
-        <div className="grid">
-          <div className="grid-col grid-col_8">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-              id felis metus. Vestibulum et pulvinar tortor. Morbi pharetra lacus
-              ut ex molestie blandit. Etiam et turpis sit amet risus mollis
-              interdum. Suspendisse et justo vitae metus bibendum fringilla sed
-              sed justo. Aliquam sollicitudin dapibus lectus, vitae consequat odio
-              elementum eget. Praesent efficitur eros vitae nunc interdum, eu
-              interdum justo facilisis. Sed pulvinar nulla ac dignissim efficitur.
-              Quisque eget eros metus. Vestibulum bibendum fringilla nibh a
-              luctus. Duis a sapien metus.
-            </p>
-
-            <p>
-              Praesent consectetur orci dui, id elementum eros facilisis id. Sed
-              id dolor in augue porttitor faucibus eget sit amet ante. Nunc
-              consectetur placerat pharetra. Aenean gravida ex ut erat commodo, ut
-              finibus metus facilisis. Nullam eget lectus non urna rhoncus
-              accumsan quis id massa. Curabitur sit amet dolor nisl. Proin
-              euismod, augue at condimentum rhoncus, massa lorem semper lacus, sed
-              lobortis augue mi vel felis. Duis ultrices sapien at est convallis
-              congue.
-            </p>
-
-            <p>
-              Fusce porta diam ac tortor elementum, ut imperdiet metus volutpat.
-              Suspendisse posuere dapibus maximus. Aliquam vitae felis libero. In
-              vehicula sapien at semper ultrices. Vivamus sed feugiat libero. Sed
-              sagittis neque id diam euismod, ut egestas felis ultricies. Nullam
-              non fermentum mauris. Sed in enim ac turpis faucibus pretium in sit
-              amet nisi.
-            </p>
-          </div>
-          <div className="grid-col grid-col_4">
-            <RegisterForm />
-
-            <center>
-              <h4>Already a Member?</h4>
-              <button className="btn btn_sizeSm" onClick={onLogin}>
-                Login
-              </button>
-            </center>
-          </div>
-        </div>
       </div>
+
+      <div className="container">
+        <hr/>
+        <p className='lead text-muted text-center m-5'>
+          fetcha is the solution to scheduling your virtual lessons quickly and efficiently.
+          Across town or across the world, fetcha has you covered.
+        </p>
+      </div>
+      <div className='container d-flex justify-content-center'>
+        <Button variant='primary' className='mx-3'>Register</Button>
+        <Button variant='primary' className='mx-3' onClick={()=>setDisplayLoginModal(true)}> Log In</Button>
+      </div>
+
+      {displayLoginModal && <LoginFormModal displayLoginModal={displayLoginModal} setDisplayLoginModal={setDisplayLoginModal}/>}
+
+    </div>
+
+
   
   );
 }
