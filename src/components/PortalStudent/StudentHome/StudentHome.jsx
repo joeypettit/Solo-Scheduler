@@ -14,7 +14,7 @@ function StudentHome() {
             <h1>Student Home</h1>
             <h2>Welcome, {user.username}!</h2>
             <p>Your ID is: {user.id}</p>
-            <Button variant="primary" onClick={()=> history.push("/student-instructor-select")}>Schedule Lessons</Button>
+            <Button variant="outline-primary" onClick={()=> history.push("/student-instructor-select")}>Schedule Lessons</Button>
             <LogOutButton className="btn" />
         </div>
   );
