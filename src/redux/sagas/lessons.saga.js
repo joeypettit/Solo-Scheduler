@@ -9,7 +9,7 @@ function* fetchInstructorLessons(){
         let response = yield axios({
             method: 'GET',
             url: '/api/lessons/instructor'
-        })
+        });
         console.log('in fetchInstructorLessons', response.data);
         yield put ({ type: 'SET_LESSONS', payload: response.data});
     }

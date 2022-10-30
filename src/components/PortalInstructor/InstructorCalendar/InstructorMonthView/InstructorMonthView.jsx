@@ -157,7 +157,7 @@ function CalMonthView({displayReferenceDate}){
                           // else if a student is registered for a class it will appear different color and with cancel button,
                    
                           if (DateTime.fromISO(thisEvent.start_time) < DateTime.now() && !thisEvent.students_enrolled_ids.includes(null)){
-                            return <div key={index} className='alert alert-warning p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Past Lesson</p><hr/>
+                            return <div key={index} className='alert alert-warning p-1 m-1'><p className='event-text'><strong>Past Lesson</strong></p><p className='event-text'>{eventText}</p><hr/>
                                       <div className='d-flex justify-content-around'>
                                         <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -175,7 +175,7 @@ function CalMonthView({displayReferenceDate}){
                                     </div>
                                     
                           } else if(DateTime.fromISO(thisEvent.start_time) < DateTime.now() && thisEvent.students_enrolled_ids.includes(null)){
-                            return <div key={index} className='alert alert-secondary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Unclaimed Time</p><hr/>
+                            return <div key={index} className='alert alert-secondary p-1 m-1'><p className='event-text font-bold'><strong>Unclaimed Time</strong></p><p className='event-text'>{eventText}</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                     <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -192,7 +192,7 @@ function CalMonthView({displayReferenceDate}){
                                     </div>
                                   </div>
                           } else if(!thisEvent.students_enrolled_ids.includes(null)){
-                            return <div key={index} className='alert alert-success p-1 m-1 '><p className='event-text'>{eventText}</p><p className='event-text'>Scheduled!</p><hr/>
+                            return <div key={index} className='alert alert-success p-1 m-1 '><p className='event-text'><strong>Student Enrolled!</strong></p><p className='event-text'>{eventText}</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                       <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">
@@ -209,7 +209,7 @@ function CalMonthView({displayReferenceDate}){
                                       </div>
                                     </div>
                           } else{
-                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'>{eventText}</p><p className='event-text'>Open Time</p><hr/>
+                            return <div key={index} className='alert alert-primary p-1 m-1'><p className='event-text'><strong>Open Time</strong></p><p className='event-text'>{eventText}</p><hr/>
                                     <div className='d-flex justify-content-around'>
                                         <button className="btn btn-sm opacity-75 btn-light border shadow-sm" onClick={()=>launchDisplayLessonInfo(thisEvent)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-info-square-fill" viewBox="0 0 16 16">

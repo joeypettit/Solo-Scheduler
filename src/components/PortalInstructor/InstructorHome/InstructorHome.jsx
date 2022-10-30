@@ -16,8 +16,10 @@ function InstructorHome() {
   const history = useHistory();
   const user = useSelector((store) => store.user);
   const allLessons = useSelector(store => store.lessons); // lessons from this instructor
-  const [lessonsToDisplay, setLessonsToDisplay] = useState();
+  const [lessonsToDisplay, setLessonsToDisplay] = useState([]);
   const studentList = useSelector(store=>store.allStudents);
+
+  console.log('in instructor home', );
 
 
   // this function sorts through all instructor lessons and
@@ -28,7 +30,7 @@ function InstructorHome() {
     // This loop checks that the lesson is after current time then checks that it has students
     // it will push the first five of these lessons after current time to the nextFiveLessons array
     for(let lesson of allLessons){
-      if(DateTime.fromISO(lesson.start_time)>DateTime.now() 
+      if(DateTime.fromISO(lesson.start_time)>DateTime.now()
           && !lesson.students_enrolled_ids.includes(null)
           && nextFiveLessons.length <= 5){
     
@@ -78,9 +80,8 @@ function InstructorHome() {
                       </div>
                       <div className='col-2 text-center'><h4>With</h4></div>
                       <div className='col-4'>
-                      <Badge bg="primary" className='my-1 shadow'><h5>{lesson.studentNames[0]}</h5></Badge> 
-                      </div>
-                      
+                      <Badge bg="primary" className='my-1 shadow'><h5>{lesson?.studentNames[0]}</h5></Badge> 
+                      </div>   
                     </Alert>
           })}
       </div>

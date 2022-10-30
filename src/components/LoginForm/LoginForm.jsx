@@ -31,7 +31,7 @@ function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
 
       <Modal show={displayLoginModal} onHide={()=>setDisplayLoginModal(false)}>
         <Modal.Header>
-          <Modal.Title><h2>Login</h2></Modal.Title>
+          <Modal.Title ><h2>Login</h2></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={login}>
@@ -41,35 +41,39 @@ function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
                 {errors.loginMessage}
               </h3>
             )}
-            <div className="form-group">
-              <label htmlFor="username">
-              Username:
-                <input
-                  type="text"
-                  name="username"
-                  required
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </label>
+              <div className="form-group">
+                <div >
+                  <label htmlFor="username" className='text-center my-3'>
+                  Username:
+                    <input
+                      type="text"
+                      name="username"
+                      required
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                    />
+                  </label>
+              </div>
             </div>
             <div>
-              <label htmlFor="password">
-                Password:
-                <input
-                  type="password"
-                  name="password"
-                  required
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                />
-              </label>
+              <div >
+                <label htmlFor="password" className='text-center my-3'>
+                  Password:
+                  <input
+                    type="password"
+                    name="password"
+                    required
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                  />
+                </label>
+              </div>
             </div>
-            <div>
-              <Button variant="secondary" onClick={()=>setDisplayLoginModal(false)}>
+            <div className='text-center m-3'>
+              <Button variant="secondary" className='mx-3' onClick={()=>setDisplayLoginModal(false)}>
                 Back
               </Button>
-              <Button variant="primary" type="submit" name="submit">
+              <Button variant="primary" type="submit" name="submit" className='mx-3'>
                 Login
               </Button>
             </div>
