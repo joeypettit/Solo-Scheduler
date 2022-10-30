@@ -23,8 +23,6 @@ function CalMonthView({displayReferenceDate}){
     const [displayAddFormModal, setDisplayAddFormModal] = useState(false);
     const [dateToAdd, setDateToAdd] = useState();
 
-
-
     //~~~ holds date objects for all dates in this view
     const [displayedDates, setDisplayedDates] = useState([]);
     // date objects ==>      {

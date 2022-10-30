@@ -53,27 +53,33 @@ function AddEventForm({setDisplayAddFormModal, displayAddFormModal, dateToAdd}){
         <>
         <Modal show={displayAddFormModal}>
         <Modal.Header>
-          <Modal.Title><h1>Add a New Lesson Time</h1></Modal.Title>
+          <Modal.Title className='container d-flex flex-row justify-content-center'><h2>Add a New Lesson Time</h2></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <div>
-                <label htmlFor="time-in" />
-                <input type="date" value={dateIn ? dateIn : dateToAdd} onChange={(e)=>setDateIn(e.target.value)}/>
-                <label htmlFor="time-in">Time:</label>
-                <input type="time" value={startTimeIn} onChange={(e)=>setStartTimeIn(e.target.value)}/>
-                <label htmlFor="length-in">Lesson Length</label>
-                <select id="length-in" value={lessonLengthIn} onChange={(e)=>setLessonLengthIn(e.target.value)}>
-                    <option value={50}>50 minutes</option>
-                    <option value={110}>110 minutes</option>
-                </select>
+            <div className='container d-flex flex-column align-items-center'>
+                <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+                    <label htmlFor="time-in" className='d-flex flex-column align-items-center'><h5>Date:</h5></label>
+                    <input type="date" value={dateIn ? dateIn : dateToAdd} onChange={(e)=>setDateIn(e.target.value)}/>
+                </div>
+                <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+                    <label htmlFor="time-in"><h5>Start Time:</h5></label>
+                    <input type="time" value={startTimeIn} onChange={(e)=>setStartTimeIn(e.target.value)}/>
+                </div>
+                <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+                    <label htmlFor="length-in"><h5>Lesson Length:</h5></label>
+                    <select id="length-in" value={lessonLengthIn} onChange={(e)=>setLessonLengthIn(e.target.value)}>
+                        <option value={50}>50 minutes</option>
+                        <option value={110}>110 minutes</option>
+                    </select>
+                </div>
             </div>
         </Modal.Body>
-        <Modal.Footer>
-            <Button variant="primary" onClick={()=>addNewLesson()}>
-                Add
-            </Button>
+        <Modal.Footer className='container d-flex flex-row justify-content-center'>
             <Button variant="secondary" onClick={()=>setDisplayAddFormModal(false)}>
                 Close
+            </Button>
+            <Button variant="primary" onClick={()=>addNewLesson()}>
+                Add
             </Button>
         </Modal.Footer>
       </Modal>

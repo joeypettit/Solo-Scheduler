@@ -40,22 +40,23 @@ function ShowLessonInfo({displayLessonInfoModal, thisLessonInfo, setDisplayLesso
       <>
         <Modal show={displayLessonInfoModal}>
         <Modal.Header>
-          <Modal.Title><h1>{startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h1></Modal.Title>
+          <Modal.Title className='container d-flex flex-column align-items-center'><h2>This Lesson</h2></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className='container d-flex flex-column'>
+          <div className='container d-flex flex-column align-items-center'>
+            <h1>{startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h1>
             <h4>From: <span className='lead'>{startTime.toLocaleString(DateTime.TIME_SIMPLE)}</span></h4>
             <h4>To: <span className='lead'>{endTime.toLocaleString(DateTime.TIME_SIMPLE)}</span></h4>
             <h4>Students: <span className='lead'>{studentNames && studentNames.map((student, index)=>{
               if(student === 'None'){
-                return <Badge bg="warning">{student}</Badge>;
+                return <Badge key={index} bg="warning">{student}</Badge>;
               } else{
-                return <Badge bg="success">{student}</Badge>;
+                return <Badge key={index} bg="success">{student}</Badge>;
               }    
             })}</span></h4>
           </div>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className='container d-flex flex-row justify-content-center'>
           <Button variant="secondary" onClick={()=>setDisplayLessonInfoModal(false)}>
             Close
           </Button>

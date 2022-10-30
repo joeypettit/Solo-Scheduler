@@ -16,7 +16,7 @@ function InstructorHome() {
   const history = useHistory();
   const user = useSelector((store) => store.user);
   const allLessons = useSelector(store => store.lessons); // lessons from this instructor
-  const [lessonsToDisplay, setLessonsToDisplay] = useState([]);
+  const [lessonsToDisplay, setLessonsToDisplay] = useState([null]);
   const studentList = useSelector(store=>store.allStudents);
 
   console.log('in instructor home', );
@@ -69,7 +69,7 @@ function InstructorHome() {
         <div>
           <h1 className='text-muted text-center my-3'>Upcoming Scheduled Lessons:</h1>
         </div>
-          {lessonsToDisplay && lessonsToDisplay.map((lesson, index)=>{
+          {!lessonsToDisplay.includes(null) && lessonsToDisplay.map((lesson, index)=>{
             const startTime = DateTime.fromISO((lesson.start_time));
             const endTime = DateTime.fromISO((lesson.end_time));
 

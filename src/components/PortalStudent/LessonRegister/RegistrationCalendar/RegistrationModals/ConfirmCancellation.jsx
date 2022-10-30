@@ -27,17 +27,17 @@ function ConfirmCancellation({thisLessonInfo, setCancelModalDisplayed,cancelModa
         <Modal.Header>
           <Modal.Title><h1>Are you sure you would like to cancel this lesson with {thisLessonInfo.first_name}?</h1></Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            <h2>From: {startTime.toLocaleString(DateTime.TIME_SIMPLE)} </h2>
+        <Modal.Body className='text-center'>
+            <h2>From: {startTime.toLocaleString(DateTime.TIME_SIMPLE)}</h2>
             <h2>To: {endTime.toLocaleString(DateTime.TIME_SIMPLE)}</h2>
             <h2>On: {startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h2>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="danger" onClick={()=>CancelReservation()}>
-                Cancel
-            </Button>
             <Button variant="secondary" onClick={()=>setCancelModalDisplayed(false)}>
                 Close
+            </Button>
+            <Button variant="danger" onClick={()=>CancelReservation()}>
+                Yes, Cancel This Lesson
             </Button>
         </Modal.Footer>
       </Modal>
