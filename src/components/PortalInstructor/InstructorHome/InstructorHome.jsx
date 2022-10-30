@@ -69,7 +69,7 @@ function InstructorHome() {
         <div>
           <h1 className='text-muted text-center my-3'>Upcoming Scheduled Lessons:</h1>
         </div>
-          {!lessonsToDisplay.includes(null) && lessonsToDisplay.map((lesson, index)=>{
+          {!lessonsToDisplay.includes(null) ? lessonsToDisplay.map((lesson, index)=>{
             const startTime = DateTime.fromISO((lesson.start_time));
             const endTime = DateTime.fromISO((lesson.end_time));
 
@@ -80,10 +80,10 @@ function InstructorHome() {
                       </div>
                       <div className='col-2 text-center'><h4>With</h4></div>
                       <div className='col-4'>
-                      <Badge bg="primary" className='my-1 shadow'><h5>{lesson?.studentNames[0]}</h5></Badge> 
+                        <Badge bg="primary" className='my-1 shadow'><h5>{lesson.studentNames[0]}</h5></Badge>
                       </div>   
                     </Alert>
-          })}
+          }): null }
       </div>
     </div>
   );

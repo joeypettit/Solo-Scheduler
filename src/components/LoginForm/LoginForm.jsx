@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 import Modal  from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import {useHistory} from 'react-router-dom';
 
 function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const user = useSelector(store=> store.user);
 
   const login = (event) => {
     event.preventDefault();
@@ -21,10 +24,15 @@ function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
           password: password,
         },
       });
+
     } else {
       dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
   }; // end login
+
+
+  useEffect(()=>history.push('/home'), [user]);
+
 
   return (
     <>
@@ -42,9 +50,9 @@ function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
               </h3>
             )}
               <div className="form-group">
-                <div >
+                <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
                   <label htmlFor="username" className='text-center my-3'>
-                  Username:
+                  <h5>Username:</h5>
                     <input
                       type="text"
                       name="username"
@@ -56,9 +64,9 @@ function LoginFormModal({displayLoginModal, setDisplayLoginModal}) {
               </div>
             </div>
             <div>
-              <div >
+              <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
                 <label htmlFor="password" className='text-center my-3'>
-                  Password:
+                  <h5>Password:</h5>
                   <input
                     type="password"
                     name="password"

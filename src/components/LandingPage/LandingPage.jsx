@@ -62,8 +62,8 @@ function LandingPage() {
         </p>
       </div>
       <div className='container d-flex justify-content-center'>
-        <Button variant='primary' className='mx-3'>Register</Button>
-        <Button variant='primary' className='mx-3' onClick={()=>setDisplayLoginModal(true)}> Log In</Button>
+        <Button variant='outline-primary' className='btn btn-lg mx-3'>Register</Button>
+        <Button variant='outline-primary' className='btn btn-lg mx-3' onClick={()=>setDisplayLoginModal(true)}> Log In</Button>
       </div>
 
       {displayLoginModal && <LoginFormModal displayLoginModal={displayLoginModal} setDisplayLoginModal={setDisplayLoginModal}/>}
