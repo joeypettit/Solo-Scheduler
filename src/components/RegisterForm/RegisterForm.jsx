@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import Modal  from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
-function RegisterForm() {
+function RegisterForm({displayRegistrationModal, setDisplayRegistrationModal}) {
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
@@ -47,18 +49,15 @@ function RegisterForm() {
 
   }
 
-
-
-
-
   const registerUser = (event) => {
-    event.preventDefault();
+    console.log('in registerUser:', username, password);
 
     dispatch({
       type: 'REGISTER',
       payload: {
         username: username,
         password: password,
+
         
       },
     });
@@ -71,95 +70,103 @@ function RegisterForm() {
   }, [username]);
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
-        {username? usernameIsAvailable ? <div> ✅ Username Available!</div> : <div>❌ Username Unavailable</div> :null}
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            required
-            onChange={(event) => {
-              setPassword(event.target.value),
-              checkPasswordsMatch()}}
-          />
-        </label>
-        {password? <div>{passwordFeedback}</div> : null}
-      </div>
-      <div>
-        <label htmlFor="confirm-password">
-          Confirm Password:
-          <input
-            type="password"
-            name="confirm-password"
-            value={confirmPassword}
-            required
-            onChange={(event) => {
-              setConfirmPassword(event.target.value),
-              checkPasswordsMatch()}}
-          />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="first-name">
-          First Name:
-          <input
-            type="text"
-            name="first-name"
-            value={firstName}
-            required
-            onChange={(event) => setFirstName(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="last-name">
-          Last Name:
-          <input
-            type="text"
-            name="last-name"
-            value={lastName}
-            required
-            onChange={(event) => setLastName(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="email">
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={email}
-            required
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-    </form>
+    <>
+        <Modal show={displayRegistrationModal}>
+        <Modal.Header>
+          <Modal.Title className='container text-center'><h2>Registration</h2></Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='container d-flex flex-column align-items-center'>
+        <div className='container d-flex flex-column align-items-center'>
+          <form className="formPanel">
+            {errors.registrationMessage && (
+              <h3 className="alert" role="alert">
+                {errors.registrationMessage}
+              </h3>
+            )}
+            <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+              <label htmlFor="username"><h5>Username:</h5></label>
+                <input
+                  type="text"
+                  name="username"
+                  value={username}
+                  required
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              {username? usernameIsAvailable ? <div> ✅ Username Available!</div> : <div>❌ Username Unavailable</div> :null}
+            </div>
+            <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+              <label htmlFor="password"><h5>Password:</h5></label>
+                <input
+                  type="password"
+                  name="password"
+                  value={password}
+                  required
+                  onChange={(event) => {
+                    setPassword(event.target.value),
+                    checkPasswordsMatch()}}
+                />
+              
+              {password? <div>{passwordFeedback}</div> : null}
+            </div>
+            <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+              <label htmlFor="confirm-password"><h5>Confirm Password:</h5></label>
+                <input
+                  type="password"
+                  name="confirm-password"
+                  value={confirmPassword}
+                  required
+                  onChange={(event) => {
+                    setConfirmPassword(event.target.value),
+                    checkPasswordsMatch()}}
+                />
+              
+            </div>
+            <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+              <label htmlFor="first-name"><h5>First Name:</h5></label>
+                <input
+                  type="text"
+                  name="first-name"
+                  value={firstName}
+                  required
+                  onChange={(event) => setFirstName(event.target.value)}
+                />
+              
+            </div>
+            <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+              <label htmlFor="last-name"><h5>Last Name:</h5></label>
+                <input
+                  type="text"
+                  name="last-name"
+                  value={lastName}
+                  required
+                  onChange={(event) => setLastName(event.target.value)}
+                />
+            </div>
+            <div className='container d-flex flex-column justify-content-center bg-light p-1 m-1 align-items-center shadow-sm'>
+              <label htmlFor="email"><h5>Email:</h5></label>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  required
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+            </div>
+            <div  className='container d-flex flex-row justify-content-center bg-light p-1 m-1 shadow-sm'>
+            <Button variant="secondary" className='mx-3' onClick={()=>setDisplayRegistrationModal(false)}>
+                Close
+            </Button>
+            <Button variant="primary" className='mx-3' onClick={()=>registerUser()}>
+                Register
+            </Button>
+            </div>
+          </form>
+          </div>
+        </Modal.Body>
+      </Modal>
+    
+    
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import './LandingPage.css';
 import LoginFormModal from '../LoginForm/LoginForm';
 
+
 // CUSTOM COMPONENTS
 import RegisterForm from '../RegisterForm/RegisterForm';
 
@@ -12,6 +13,7 @@ function LandingPage() {
   const history = useHistory();
 
   const [displayLoginModal, setDisplayLoginModal] = useState(false);
+  const [displayRegistrationModal, setDisplayRegistrationModal] = useState(false);
 
   const onLogin = (event) => {
     history.push('/login');
@@ -62,11 +64,12 @@ function LandingPage() {
         </p>
       </div>
       <div className='container d-flex justify-content-center'>
-        <Button variant='outline-primary' className='btn btn-lg mx-3'>Register</Button>
+        <Button variant='outline-primary' className='btn btn-lg mx-3' onClick={()=>setDisplayRegistrationModal(true)}>Register</Button>
         <Button variant='outline-primary' className='btn btn-lg mx-3' onClick={()=>setDisplayLoginModal(true)}> Log In</Button>
       </div>
 
       {displayLoginModal && <LoginFormModal displayLoginModal={displayLoginModal} setDisplayLoginModal={setDisplayLoginModal}/>}
+      {displayRegistrationModal && <RegisterForm displayRegistrationModal ={displayRegistrationModal} setDisplayRegistrationModal = {setDisplayRegistrationModal}/>}
 
     </div>
 
