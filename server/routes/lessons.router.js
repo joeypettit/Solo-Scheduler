@@ -29,7 +29,8 @@ router.get('/student/', rejectUnauthenticated, (req, res) => {
 
     let queryText = `SELECT "student_id", "start_time", "end_time", "notes", "instructor_id" FROM "students_lessons"
                     JOIN "lessons" on "students_lessons"."lesson_id"="lessons"."id"
-                    WHERE "student_id"= $1;`;
+                    WHERE "student_id"= $1
+                    ORDER BY "start_time";`;
                     
     pool
     .query(queryText,[student_id])

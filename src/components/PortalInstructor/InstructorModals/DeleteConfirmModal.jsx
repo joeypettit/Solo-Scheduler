@@ -69,7 +69,7 @@ function DeleteConfirmModal({displayDeleteConfirmModal, thisLessonInfo, setDispl
                 Close
             </Button>
             <Button variant="danger" onClick={()=>deleteEvent()}>
-                Cancel This Lesson
+                Yes, Cancel This Lesson
             </Button>
         </Modal.Footer>
       </Modal>

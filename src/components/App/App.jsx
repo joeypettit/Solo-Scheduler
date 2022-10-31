@@ -18,6 +18,7 @@ import InstructorRoute from '../ProtectedRoutes/InstructorRoute';
 import StudentRoute from '../ProtectedRoutes/StudentRoute';
 import StudentInstructorSelect from '../PortalStudent/LessonRegister/StudentInstructorSelect';
 import StudentLessonSelect from '../PortalStudent/LessonRegister/StudentLessonSelect';
+import InstructorCalendar from '../PortalInstructor/InstructorCalendar/InstructorCalendar';
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +70,9 @@ function App() {
             {/* ~~~~~ Instructor Routes ~~~~~ */}
             <InstructorRoute exact path="/instructor-home">
               <InstructorHome />
+            </InstructorRoute>
+            <InstructorRoute exact path="/instructor-schedule">
+              <InstructorCalendar />
             </InstructorRoute>
 
  

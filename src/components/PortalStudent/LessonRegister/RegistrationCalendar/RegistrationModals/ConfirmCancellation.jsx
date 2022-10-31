@@ -25,14 +25,14 @@ function ConfirmCancellation({thisLessonInfo, setCancelModalDisplayed,cancelModa
         <>
         <Modal show={cancelModalDisplayed}>
         <Modal.Header>
-          <Modal.Title><h1>Are you sure you would like to cancel this lesson with {thisLessonInfo.first_name}?</h1></Modal.Title>
+          <Modal.Title className='container d-flex flex-row align-items-center justify-content-center'><h1>Are you sure you would like to cancel this lesson with {thisLessonInfo.first_name}?</h1></Modal.Title>
         </Modal.Header>
-        <Modal.Body className='text-center'>
-            <h2>From: {startTime.toLocaleString(DateTime.TIME_SIMPLE)}</h2>
-            <h2>To: {endTime.toLocaleString(DateTime.TIME_SIMPLE)}</h2>
-            <h2>On: {startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h2>
+        <Modal.Body className='container d-flex flex-column align-items-center justify-content-center'>
+            <h1>{startTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</h1>
+            <h4>From: <span className='lead'>{startTime.toLocaleString(DateTime.TIME_SIMPLE)}</span></h4>
+            <h4>To: <span className='lead'>{endTime.toLocaleString(DateTime.TIME_SIMPLE)}</span></h4>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className='container d-flex flex-row align-items-center justify-content-center'>
             <Button variant="secondary" onClick={()=>setCancelModalDisplayed(false)}>
                 Close
             </Button>

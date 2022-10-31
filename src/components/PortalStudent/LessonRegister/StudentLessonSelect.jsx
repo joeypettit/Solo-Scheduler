@@ -1,6 +1,5 @@
 import LogOutButton from '../../LogOutButton/LogOutButton';
 import {useSelector} from 'react-redux';
-import StudentSchedule from '../StudentSchedule/StudentSchedule';
 import {useEffect} from 'react';
 import RegistrationCalendar from './RegistrationCalendar/RegistrationCalendar';
 

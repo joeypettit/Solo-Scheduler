@@ -1,6 +1,5 @@
 import LogOutButton from '../../LogOutButton/LogOutButton';
 import {useSelector, useDispatch} from 'react-redux';
-import StudentSchedule from '../StudentSchedule/StudentSchedule';
 import {useHistory} from 'react-router-dom';
 import {useEffect} from 'react';
 import Card from 'react-bootstrap/Card';
