@@ -16,7 +16,7 @@ function LessonSelect() {
   return (
     <div className="container">
       <div className='m-3'>
-        <h1 className='d-flex justify-content-center text-muted'>Select A Lesson Time</h1>
+        {instructorLessons.length > 0 && <h1 className='d-flex justify-content-center text-muted'>Select A Lesson Time with {instructorLessons[0].first_name}</h1>}
       </div>
         <RegistrationCalendar />
     </div>
