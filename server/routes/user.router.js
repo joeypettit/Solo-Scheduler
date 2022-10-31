@@ -60,7 +60,7 @@ router.get('/all-instructors', rejectUnauthenticated, (req, res) => {
     console.log('in all-instructors', response.rows);
     res.send(response.rows)
   }).catch((error) => console.log('Error SELECTing instructors'));
-})
+});
 
 
 // get array of all current usernames, check if sent username is taken,

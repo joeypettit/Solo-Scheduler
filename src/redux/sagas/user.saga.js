@@ -31,6 +31,8 @@ function* fetchInstructors(){
         url: '/api/user/all-instructors/'
       })
 
+      console.log('in fetchInstructors', response.data);
+
       yield put({type: 'SET_INSTRUCTORS', payload: response.data})
 
   } catch(error) {

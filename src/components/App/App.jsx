@@ -16,7 +16,6 @@ import './App.css';
 import StudentHome from '../PortalStudent/StudentHome/StudentHome';
 import InstructorRoute from '../ProtectedRoutes/InstructorRoute';
 import StudentRoute from '../ProtectedRoutes/StudentRoute';
-import InstructorSchedule from '../PortalInstructor/InstructorSchedule/InstructorSchedule';
 import StudentInstructorSelect from '../PortalStudent/LessonRegister/StudentInstructorSelect';
 import StudentLessonSelect from '../PortalStudent/LessonRegister/StudentLessonSelect';
 
@@ -71,12 +70,7 @@ function App() {
             <InstructorRoute exact path="/instructor-home">
               <InstructorHome />
             </InstructorRoute>
-            <InstructorRoute exact path="/instructor-schedule">
-              <InstructorSchedule />
-            </InstructorRoute>
-            <InstructorRoute exact path="/instructor-history">
-              <InstructorSchedule />
-            </InstructorRoute>
+
  
             <Route>
                 <h1>404</h1>

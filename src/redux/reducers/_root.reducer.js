@@ -5,6 +5,7 @@ import lessons from './lessons.reducer';
 import instructors from './instructors.reducer';
 import selectedInstructor from './selectedInstructor.reducer';
 import allStudents from './allStudents.reducer';
+import studentLessons from './studentLessons.reducer';
 
 
 // rootReducer is the primary reducer for our entire project
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   instructors,
   selectedInstructor,
   allStudents,
+  studentLessons,
 });
 
 export default rootReducer;

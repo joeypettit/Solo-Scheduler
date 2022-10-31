@@ -1,14 +1,11 @@
 import LogOutButton from '../../LogOutButton/LogOutButton';
 import { useEffect, useState } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import InstructorSchedule from '../InstructorSchedule/InstructorSchedule';
 import {useHistory} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import {DateTime} from 'luxon';
 import Alert from 'react-bootstrap/Alert';
 import Badge from 'react-bootstrap/Badge';
-
-
 
 
 function InstructorHome() {
@@ -80,7 +77,7 @@ function InstructorHome() {
                       </div>
                       <div className='col-2 text-center'><h4>With</h4></div>
                       <div className='col-4'>
-                        <Badge bg="primary" className='my-1 shadow'><h5>{lesson.studentNames[0]}</h5></Badge>
+                        <Badge bg="primary" className='my-1 shadow'><h5>{lesson?.studentNames[0]}</h5></Badge>
                       </div>   
                     </Alert>
           }): null }

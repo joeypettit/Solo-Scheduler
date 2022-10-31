@@ -18,6 +18,24 @@ function* fetchInstructorLessons(){
     }
 }
 
+// fetches all scheduled lessons of the logged in student
+function* fetchStudentLessons(){
+  try{
+    let response = yield axios({
+        method: 'GET',
+        url: '/api/lessons/student'
+    });
+    console.log('in fetchStudentLessons', response.data);
+    yield put ({ type: 'SET_STUDENT_LESSONS', payload: response.data});
+}
+catch(error){
+    console.log('User Get Request Failed', error);
+}
+}
+
+
+
+
 // this saga fetches the lesson schedule and firstname, lastname, and id of the 
 // selected instructor (user id is in action.payload)
 function* fetchSelectedInstructorLessons(action) {
@@ -33,6 +51,8 @@ function* fetchSelectedInstructorLessons(action) {
       console.log('fetchSelectedInstructorLessons Get Request Failed', error);
   }
 }
+
+
 
 
 // worker Saga: will be fired on "ADD_LESSON"
@@ -104,9 +124,10 @@ function* deleteLesson(action) {
 
 function* lessonSaga() {
     yield takeLatest('FETCH_LESSONS', fetchInstructorLessons);
+    yield takeLatest('FETCH_STUDENT_LESSONS', fetchStudentLessons);
     yield takeLatest('FETCH_SELECTED_INSTRUCTOR_LESSONS', fetchSelectedInstructorLessons);
     yield takeLatest('RESERVE_LESSON_TIME', reserveLessonTime);
-    yield takeLatest('REMOVE_LESSON_RESERVATION', removeLessonReservation)
+    yield takeLatest('REMOVE_LESSON_RESERVATION', removeLessonReservation);
     yield takeLatest('ADD_LESSON', addLesson);
     yield takeLatest('DELETE_LESSON', deleteLesson);
     yield takeLatest('LOGOUT', deleteLesson);

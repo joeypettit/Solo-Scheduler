@@ -22,6 +22,26 @@ router.get('/instructor', rejectUnauthenticated, (req, res) => {
     });
 });
 
+
+//~~~ this route will select all of the logged in student's lessons with all instructors.
+router.get('/student/', rejectUnauthenticated, (req, res) => {
+    let student_id = req.user.id;
+
+    let queryText = `SELECT "student_id", "start_time", "end_time", "notes", "instructor_id" FROM "students_lessons"
+                    JOIN "lessons" on "students_lessons"."lesson_id"="lessons"."id"
+                    WHERE "student_id"= $1;`;
+                    
+    pool
+    .query(queryText,[student_id])
+    .then((response)=> res.send(response.rows))
+    .catch((error) => {
+        console.log('Error Selecting student lessons', error);
+        res.sendStatus(500);
+    });
+
+
+})
+
 // this route selects the available lessons of an instructor (by a different user (student))
 // returns an object with instructor info and array of lesson objects (from lessons table)
 router.get('/instructor/:instructorid', rejectUnauthenticated, (req, res) => {
