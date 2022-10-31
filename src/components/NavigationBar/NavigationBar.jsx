@@ -5,11 +5,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector, useDispatch } from 'react-redux';
+import {useEffect} from 'react'
 
 function NavigationBar() {
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
 
+
+  useEffect(()=>console.log('in navbar', user));
+  
   return (
     <Navbar bg="light" expand="lg" className="shadow">
     <Container className='mx-3'>
@@ -23,7 +27,7 @@ function NavigationBar() {
           <h1 className='mx-2 pe-3 border-bottom'>fecha</h1>
       </Navbar.Brand>
       </Container>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
           <Nav.Link href="#home">
@@ -31,11 +35,13 @@ function NavigationBar() {
         <Nav.Link href="#home">
           <h4>Home</h4>
         </Nav.Link>
-          <Nav.Link href="#home">
-            <h4 onClick={() => dispatch({ type: 'LOGOUT' })}>Log Out</h4>
-          </Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
+          {!Object.keys(user).length === 0 && 
+            <Nav.Link href="#home">
+              <h4 onClick={() => dispatch({ type: 'LOGOUT' })}>Log Out</h4>
+            </Nav.Link>}
+           */}
+        {/* </Nav>
+      </Navbar.Collapse> */}
   </Navbar>
 
 

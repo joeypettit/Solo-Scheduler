@@ -11,7 +11,6 @@ import NavigationBar from '../NavigationBar/NavigationBar';
 import Footer from '../Footer/Footer';
 import LandingPage from '../LandingPage/LandingPage';
 import InstructorHome from '../PortalInstructor/InstructorHome/InstructorHome';
-import RegisterPage from '../RegisterPage/RegisterPage';
 import './App.css';
 import StudentHome from '../PortalStudent/StudentHome/StudentHome';
 import InstructorRoute from '../ProtectedRoutes/InstructorRoute';
@@ -48,8 +47,8 @@ function App() {
               {!user.id ? <LandingPage /> : null}
             </Route>
             
-            <Route path ="/register">
-              <RegisterPage />
+            <Route path ="/landingpage">
+              <LandingPage />
             </Route>
 
             <Route exact path="/login">
