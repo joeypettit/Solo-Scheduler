@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Calendar from '../PortalInstructor/InstructorCalendar/InstructorCalendar';
 import Button from 'react-bootstrap/Button';
-import './LandingPage.css';
 import LoginFormModal from '../LoginForm/LoginForm';
 
 

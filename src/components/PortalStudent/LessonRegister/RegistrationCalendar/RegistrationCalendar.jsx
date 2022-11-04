@@ -1,6 +1,5 @@
 import CalMonthView from "./RegistrationMonthView/RegistrationMonthView";
 import CalNavigation from '../../../CalNavigation/CalNavigation'
-import './RegistrationCalendar.css';
 import {DateTime} from 'luxon';
 import {useState, useEffect} from 'react';
 
