@@ -24,7 +24,7 @@ function App() {
   const user = useSelector(store => store.user);
 
   console.log('User is:', user.id);
-  console.log('user id is', user.id === 11)
+  console.log('user id is', user.id === 11);
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
