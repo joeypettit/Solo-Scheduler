@@ -21,11 +21,9 @@ import InstructorCalendar from '../PortalInstructor/InstructorCalendar/Instructo
 function App() {
   const dispatch = useDispatch();
 
-  const user = useSelector(store => store.user);
+  const user = useSelector(store => store.user); // select logged in user info
 
-  console.log('User is:', user.id);
-  console.log('user id is', user.id === 11);
-
+  // fetch user on on page load
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
   }, []);
