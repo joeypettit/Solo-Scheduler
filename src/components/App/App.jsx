@@ -8,7 +8,6 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import NavigationBar from '../NavigationBar/NavigationBar';
-import Footer from '../Footer/Footer';
 import LandingPage from '../LandingPage/LandingPage';
 import InstructorHome from '../PortalInstructor/InstructorHome/InstructorHome';
 import './App.css';
@@ -42,9 +41,9 @@ function App() {
             
             <Route exact path="/home">
               {/* conditinal reder depending on role */}
-              {user.id && user.is_instructor ? <Redirect to="/instructor-home" /> : null}
-              {user.id && !user.is_instructor ? <Redirect to="/student-home" /> : null}
-              {!user.id ? <LandingPage /> : null}
+              {(user.id && user.is_instructor) && <Redirect to="/instructor-home" />}
+              {(user.id && !user.is_instructor) && <Redirect to="/student-home" />}
+              {!user.id && <LandingPage />}
             </Route>
             
             <Route path ="/landingpage">

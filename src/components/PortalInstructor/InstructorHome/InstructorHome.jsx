@@ -16,7 +16,7 @@ function InstructorHome() {
   const [lessonsToDisplay, setLessonsToDisplay] = useState([null]);
   const studentList = useSelector(store=>store.allStudents);
 
-  console.log('in instructor home', );
+  console.log('in instructor home', lessonsToDisplay);
 
 
   // this function sorts through all instructor lessons and
@@ -30,8 +30,10 @@ function InstructorHome() {
       if(DateTime.fromISO(lesson.start_time)>DateTime.now()
           && !lesson.students_enrolled_ids.includes(null)
           && nextFiveLessons.length <= 5){
+
     
           for(let student of studentList){
+        
             if(lesson.students_enrolled_ids.includes(student.id)){
               lesson.studentNames=[];
               lesson.studentNames.push(`${student.first_name} ${student.last_name}`);
@@ -77,7 +79,9 @@ function InstructorHome() {
                       </div>
                       <div className='col-2 text-center'><h4>With</h4></div>
                       <div className='col-4'>
-                        <Badge bg="primary" className='my-1 shadow'><h5>{lesson?.studentNames[0]}</h5></Badge>
+                        {lesson.hasOwnProperty('studentNames') 
+                        && <Badge bg="primary" className='my-1 shadow'><h5>{lesson?.studentNames[0]}</h5></Badge>
+                        }
                       </div>   
                     </Alert>
           }): null }
