@@ -31,7 +31,6 @@ function InstructorHome() {
           && !lesson.students_enrolled_ids.includes(null)
           && nextFiveLessons.length <= 5){
 
-    
           for(let student of studentList){
         
             if(lesson.students_enrolled_ids.includes(student.id)){
@@ -40,6 +39,7 @@ function InstructorHome() {
             }
           }
         nextFiveLessons.push(lesson);
+        console.log('in sort lessons, student list is', studentList);
         console.log('in sort lessons,', lesson);
       }
     }
@@ -49,7 +49,7 @@ function InstructorHome() {
 
   useEffect(()=>dispatch({type: 'FETCH_LESSONS'}), []);
   useEffect(()=>dispatch({type: 'FETCH_STUDENT_LIST'}), []);
-  useEffect(()=>sortLessons(), [allLessons]);
+  useEffect(()=>sortLessons(), [allLessons, studentList]);
 
   return (
 
@@ -90,5 +90,4 @@ function InstructorHome() {
   );
 }
 
-// this allows us to use <App /> in index.js
 export default InstructorHome;
