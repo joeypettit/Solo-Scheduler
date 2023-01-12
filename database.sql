@@ -131,3 +131,6 @@ CREATE TABLE "students_lessons" (
 ) WITH (
   OIDS=FALSE
 );
+
+-- create demo instructors
+CREATE TABLE
